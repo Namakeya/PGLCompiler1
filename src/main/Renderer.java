@@ -29,7 +29,7 @@ public class Renderer {
         //g2d.setStroke(wideStroke);//[205]
         g2d.setPaint(texp);
         g2d.fillRect(10, 10, 100, 20);//[206]
-        g2d.drawString("RED ROSE", 20, 25);//[207]
+        //g2d.drawString("RED ROSE", 20, 25);//[207]
         
         return bi;
 	}
