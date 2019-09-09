@@ -8,7 +8,7 @@ import java.io.File;
 
 import javax.imageio.ImageIO;
 
-import main.Renderer;
+import main.Main;
 class ReadImageComponent extends Component {//[100]
     BufferedImage bufferedImage = null;//[101]
     ReadImageComponent() {//[102]
@@ -24,7 +24,7 @@ class ReadImageComponent extends Component {//[100]
     public void paint(Graphics graphics) {//[110]
     	
     	bufferedImage=new BufferedImage(1024,512, BufferedImage.TYPE_INT_ARGB);
-    	new Renderer().render(bufferedImage);
+    	Main.renderer.render(bufferedImage);
         graphics.drawImage(bufferedImage, 0, 0, null);//[208]
     }
     public Dimension getPreferredSize() {//[120]
