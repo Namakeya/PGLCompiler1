@@ -13,7 +13,7 @@ import main.Renderer;
 class ReadImageComponent extends Component {//[100]
     BufferedImage bufferedImage = null;//[101]
     ReadImageComponent() {//[102]
-        String imageFilename = "resource/image.png";//[103]
+        String imageFilename = "resource/wood.jpg";//[103]
         try {//[104]
             bufferedImage = ImageIO.read(new File(imageFilename));//[105]
         } catch (IOException e) {//[106]
