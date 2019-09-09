@@ -17,7 +17,7 @@ public class ReadImageUserInterface extends JFrame implements ActionListener{//[
     public ReadImageUserInterface () {//[3]
     	super();
         setTitle("Java 画像サンプル");//[4]
-        this.setPreferredSize(new Dimension(1024,1024));
+        this.setPreferredSize(new Dimension(1024,512));
         setLayout(new BorderLayout());//[6]
         Container contentPane = getContentPane();//[7]
         component = new ReadImageComponent();//[8]

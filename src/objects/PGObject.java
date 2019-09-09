@@ -1,4 +1,4 @@
-package main;
+package objects;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,12 +7,12 @@ import java.util.Map;
 import java.util.Random;
 
 public class PGObject {
-	String simpleName;
-	long serial;
-	Map<String,PGObject> variables;
-	List<PGObject> children;
-	PGObject parent;
-	static Random random;
+	private String simpleName;
+	private long serial;
+	private Map<String,PGObject> variables;
+	private List<PGObject> children;
+	private PGObject parent;
+	private static Random random=new Random();
 	
 	public PGObject() {
 		serial = random.nextLong();
@@ -21,16 +21,22 @@ public class PGObject {
 		parent = null;
 	}
 	public PGObject(String name_){
+		this();
 		simpleName = name_;
 	}
 
-	public String getObjectName() {
+	
+	public String getFullName() {
 		if (parent != null) {
-			return parent.getObjectName()+"."+simpleName;
+			return parent.getFullName()+"."+this.getSimpleName();
 		}
 		else {
 			return simpleName;
 		}
+	}
+	
+	public String getSimpleName() {
+		return this.simpleName;
 	}
 
 
