@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import objects.PGBase;
 import objects.PGInteger;
 import objects.PGObject;
 import objects.PGVariable;
@@ -27,8 +28,8 @@ public class Renderer {
 		if(obj.getSimpleName()=="rect") {
 			rects.add(obj);
 		}
-		for(PGObject child:obj.getChildren()) {
-			register(child);
+		for(PGBase child:obj.getChildren().values()) {
+			register((PGObject)child);
 		}
 	}
 	
@@ -37,12 +38,12 @@ public class Renderer {
 		 Comparator<PGObject> comparator = new Comparator<PGObject>() {
 	            @Override
 	            public int compare(PGObject o1, PGObject o2) {
-	            	PGObject zo1=o1.getVariable("z");
+	            	PGBase zo1=o1.getChild("z");
 	            	int z1=0;
 	            	if(zo1!=null) {
 	            		z1=((PGInteger)zo1).getInt();
 	            	}
-	            	PGObject zo2=o2.getVariable("z");
+	            	PGBase zo2=o2.getChild("z");
 	            	int z2=0;
 	            	if(zo2!=null) {
 	            		z2=((PGInteger)zo2).getInt();
@@ -58,7 +59,7 @@ public class Renderer {
 
 			BufferedImage texbi = null;
 
-			String texname=((PGVariable<String>)rect.getVariable("texture")).get();
+			String texname=((PGVariable<String>)rect.getChild("texture")).get();
 			texbi=textures.get(texname);
 			if(texbi==null) {
 				try {
@@ -75,8 +76,8 @@ public class Renderer {
 			//BasicStroke wideStroke = new BasicStroke(4.0f);//[204]
 			//g2d.setStroke(wideStroke);//[205]
 			g2d.setPaint(texp);
-			g2d.fillRect(((PGInteger)rect.getVariable("x")).get(),((PGInteger)rect.getVariable("y")).get(),
-					((PGInteger)rect.getVariable("width")).get(),((PGInteger)rect.getVariable("height")).get());//[206]
+			g2d.fillRect(((PGInteger)rect.getChild("x")).get(),((PGInteger)rect.getChild("y")).get(),
+					((PGInteger)rect.getChild("width")).get(),((PGInteger)rect.getChild("height")).get());//[206]
 			//g2d.drawString("RED ROSE", 20, 25);//[207]
 		}
         return bi;

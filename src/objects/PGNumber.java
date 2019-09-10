@@ -1,8 +1,8 @@
 package objects;
 
 public abstract class PGNumber<T extends Number> extends PGVariable<T> {
-	public PGNumber(T var_) {
-		super(var_);
+	public PGNumber(String name_,T var_) {
+		super(name_, var_);
 	}
 	public long getLong() {
 		return (long)this.get();

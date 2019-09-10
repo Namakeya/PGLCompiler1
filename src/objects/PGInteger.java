@@ -2,8 +2,8 @@ package objects;
 
 public class PGInteger extends PGNumber<Integer> {
 
-	public PGInteger(Integer var_) {
-		super(var_);
+	public PGInteger(String name_,Integer var_) {
+		super(name_,var_);
 	}
 
 	@SuppressWarnings("rawtypes")

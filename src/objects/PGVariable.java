@@ -4,7 +4,8 @@ public class PGVariable<T> extends PGObject {
 
 	private T var;
 	
-	public PGVariable(T var_){
+	public PGVariable(String name_,T var_){
+		super(name_);
 		this.var=var_;
 	}
 	
