@@ -17,6 +17,7 @@ import javax.imageio.ImageIO;
 import objects.PGBase;
 import objects.PGInteger;
 import objects.PGObject;
+import objects.PGType;
 import objects.PGVariable;
 
 public class Renderer {
@@ -25,7 +26,7 @@ public class Renderer {
 	public List<PGObject> rects=new ArrayList<PGObject>();
 	
 	public void register(PGObject obj) {
-		if(obj.getSimpleName()=="rect") {
+		if(obj.getType()==PGType.getType("Rect")) {
 			rects.add(obj);
 		}
 		for(PGBase child:obj.getChildren().values()) {

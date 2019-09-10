@@ -3,6 +3,7 @@ package main;
 import jframe.ReadImageUserInterface;
 import objects.PGInteger;
 import objects.PGObject;
+import objects.PGType;
 import objects.PGVariable;
 
 public class Main {
@@ -13,9 +14,9 @@ public class Main {
 		System.out.println("Hello,world!");
 		
 		renderer=new Renderer();
-		rootObject=new PGObject("root");
-		PGObject obj1=new PGObject("rect");
-		PGObject obj2=new PGObject("rect");
+		rootObject=new PGObject("root",PGType.getType("Root"));
+		PGObject obj1=new PGObject("r1",PGType.getType("Rect"));
+		PGObject obj2=new PGObject("r2",PGType.getType("Rect"));
 		rootObject.addChild(obj1);
 		rootObject.addChild(obj2);
 		obj1.addChild(new PGInteger("width",80));

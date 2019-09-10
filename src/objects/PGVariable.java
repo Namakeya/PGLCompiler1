@@ -4,9 +4,9 @@ public class PGVariable<T> extends PGObject {
 
 	private T var;
 	
-	public PGVariable(String name_,T var_){
-		super(name_);
-		this.var=var_;
+	public PGVariable(String name,T var){
+		super(name, PGType.getType("Variable_"+var.getClass().getSimpleName()));
+		this.var=var;
 	}
 	
 	public T get() {return var;}
