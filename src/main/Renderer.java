@@ -15,7 +15,7 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 
 import objects.PGBase;
-import objects.PGInteger;
+import objects.PGDouble;
 import objects.PGObject;
 import objects.PGType;
 import objects.PGVariable;
@@ -40,16 +40,16 @@ public class Renderer {
 	            @Override
 	            public int compare(PGObject o1, PGObject o2) {
 	            	PGBase zo1=o1.getChild("z");
-	            	int z1=0;
+	            	double z1=0;
 	            	if(zo1!=null) {
-	            		z1=((PGInteger)zo1).getInt();
+	            		z1=((PGDouble)zo1).getDouble();
 	            	}
 	            	PGBase zo2=o2.getChild("z");
-	            	int z2=0;
+	            	double z2=0;
 	            	if(zo2!=null) {
-	            		z2=((PGInteger)zo2).getInt();
+	            		z2=((PGDouble)zo2).getDouble();
 	            	}
-	            	return ((Integer)z1).compareTo(z2);
+	            	return ((Double)z1).compareTo(z2);
 	            }
 	        };
 		this.rects.sort(comparator);
@@ -77,8 +77,8 @@ public class Renderer {
 			//BasicStroke wideStroke = new BasicStroke(4.0f);//[204]
 			//g2d.setStroke(wideStroke);//[205]
 			g2d.setPaint(texp);
-			g2d.fillRect(((PGInteger)rect.getChild("x")).get(),((PGInteger)rect.getChild("y")).get(),
-					((PGInteger)rect.getChild("width")).get(),((PGInteger)rect.getChild("height")).get());//[206]
+			g2d.fillRect(((PGDouble)rect.getChild("x")).getInt(),((PGDouble)rect.getChild("y")).getInt(),
+					((PGDouble)rect.getChild("width")).getInt(),((PGDouble)rect.getChild("height")).getInt());//[206]
 			//g2d.drawString("RED ROSE", 20, 25);//[207]
 		}
         return bi;

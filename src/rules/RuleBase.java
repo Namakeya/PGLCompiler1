@@ -4,6 +4,9 @@ import objects.PGBase;
 
 public abstract class RuleBase {
 
+	public String subjectS;
+	public String objectS;
+	
 	public PGBase subject;
 	public PGBase object;
 	

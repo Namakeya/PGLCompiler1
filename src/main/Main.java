@@ -1,33 +1,43 @@
 package main;
 
 import jframe.ReadImageUserInterface;
-import objects.PGBase;
-import objects.PGInteger;
+import objects.PGDouble;
 import objects.PGObject;
 import objects.PGType;
-import objects.PGVariable;
-import rules.RuleBase;
+import rules.DependenciesSolver;
 import rules.RuleEquals;
 import rules.RuleIs;
+import rules.RuleManager;
 
 public class Main {
 	public static PGObject rootObject;
 	public static Renderer renderer;
+	public static RuleManager ruleManager;
+	public static DependenciesSolver dependenciesSolver;
 
 	public static void main(String[] args) {
 		System.out.println("Hello,world!");
 		
 		renderer=new Renderer();
 		rootObject=new PGObject("root",PGType.getType("Root"));
-		PGBase obj1=new PGBase("r1",PGType.NO_TYPE);
-		PGBase obj2=new PGBase("r2",PGType.NO_TYPE);
+		ruleManager=new RuleManager();
+		dependenciesSolver=new DependenciesSolver();
 		
-		RuleBase ri1=new RuleIs(obj1,PGType.getType("Rect"));
-		obj1=ri1.apply();
-		RuleBase ri2=new RuleIs(obj2,PGType.getType("Rect"));
-		obj2=ri2.apply();
+		//PGBase obj1=new PGBase("r1",PGType.NO_TYPE);
+		//PGBase obj2=new PGBase("r2",PGType.NO_TYPE);
 		
 		
+		ruleManager.addRules(new RuleIs("root.rect1","Rect"));
+		ruleManager.addRules(new RuleIs("root.rect2","Rect"));
+		
+		ruleManager.addRules(new RuleIs("root.rect1.width","Variable_Integer"));
+		ruleManager.addRules(new RuleEquals("root.rect1.width",new PGDouble("",80)));
+		ruleManager.sortRules();
+		ruleManager.applyRules();
+		System.out.println(rootObject.getTreeString());
+		System.out.println(rootObject.getChild("rect1").getChild("width"));
+		
+		/*
 		rootObject.addChild(obj1);
 		rootObject.addChild(obj2);
 		
@@ -49,6 +59,8 @@ public class Main {
 		obj2.addChild(new PGInteger("y",80));
 		obj2.addChild(new PGInteger("z",0));
 		obj2.addChild( new PGVariable<String>("texture","resource/concrete_red.png"));
+		
+		*/
 		//File file=new File("resource/image.png");
 		//System.out.println(file.getAbsolutePath());
 		//System.out.println(new PGInteger(1).add(2));

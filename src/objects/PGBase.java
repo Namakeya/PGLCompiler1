@@ -5,6 +5,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import main.Main;
+
 public class PGBase {
 	private long serial;
 	private String simpleName;
@@ -107,4 +109,40 @@ public class PGBase {
 		return false;
 	}
 	
+	public static PGBase getPGFromFullpath(String path) {
+		String[] names=path.split("\\.");
+		PGBase pgb=null;
+		for(String s:names) {
+			//System.out.println(s);
+			if(s.equals("root")) {
+				pgb=Main.rootObject;
+			}else {
+				PGBase child=pgb.getChild(s);
+				if(child==null) {
+					//System.out.println(PGType.NO_TYPE);
+					child=new PGBase(s,PGType.NO_TYPE);
+					pgb.addChild(child);
+				}
+				pgb=child;
+			}
+			
+		}
+		return pgb;
+	}
+	
+	public String getTreeString() {
+		return getTreeString(0);
+	}
+	
+	protected String getTreeString(int level) {
+		String s="";
+		for(int i=0;i<level;i++) {
+			s+="-";
+		}
+		s+=this.getSimpleName()+"("+this.getType().getSimpleName()+")\n";
+		for(PGBase pgb:this.getChildren().values()) {
+			s+=pgb.getTreeString(level+1);
+		}
+		return s;
+	}
 }

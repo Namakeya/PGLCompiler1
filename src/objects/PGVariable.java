@@ -1,8 +1,12 @@
 package objects;
 
+import rules.Range;
+
 public class PGVariable<T> extends PGObject {
 
 	private T var;
+	private boolean isConcrete=false;
+	private Range range;
 	
 	public PGVariable(String name,T var){
 		super(name, PGType.getType("Variable_"+var.getClass().getSimpleName()));
@@ -64,5 +68,21 @@ public class PGVariable<T> extends PGObject {
 			return pgv.var.equals(this.var);
 		}
 		return false;
+	}
+
+	public boolean isConcrete() {
+		return isConcrete;
+	}
+
+	public void setConcrete(boolean isConcrete) {
+		this.isConcrete = isConcrete;
+	}
+
+	public Range getRange() {
+		return range;
+	}
+
+	public void setRange(Range range) {
+		this.range = range;
 	}
 }

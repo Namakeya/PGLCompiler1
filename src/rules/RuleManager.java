@@ -35,7 +35,7 @@ public class RuleManager {
 				}else {
 					i2=30;
 				}
-				return i2-i1;
+				return i1-i2;
 			}
 			
 		};

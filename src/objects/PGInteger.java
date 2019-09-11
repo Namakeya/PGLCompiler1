@@ -1,5 +1,7 @@
 package objects;
 
+/**DO NOT USE*/
+@Deprecated
 public class PGInteger extends PGNumber<Integer> {
 
 	public PGInteger(String name_,Integer var_) {

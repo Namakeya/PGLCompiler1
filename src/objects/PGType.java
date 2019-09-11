@@ -28,4 +28,5 @@ public class PGType extends PGBase {
 	public static PGType TYPE_TYPE=getType("Type");
 	public static PGType NO_TYPE=getType("NoType");
 	public static PGType INTEGER_TYPE=getType("Variable_Integer");
+	public static PGType DOUBLE_TYPE=getType("Variable_Double");
 }
