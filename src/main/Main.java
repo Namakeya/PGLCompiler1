@@ -1,10 +1,14 @@
 package main;
 
 import jframe.ReadImageUserInterface;
+import objects.PGBase;
 import objects.PGInteger;
 import objects.PGObject;
 import objects.PGType;
 import objects.PGVariable;
+import rules.RuleBase;
+import rules.RuleEquals;
+import rules.RuleIs;
 
 public class Main {
 	public static PGObject rootObject;
@@ -15,11 +19,24 @@ public class Main {
 		
 		renderer=new Renderer();
 		rootObject=new PGObject("root",PGType.getType("Root"));
-		PGObject obj1=new PGObject("r1",PGType.getType("Rect"));
-		PGObject obj2=new PGObject("r2",PGType.getType("Rect"));
+		PGBase obj1=new PGBase("r1",PGType.NO_TYPE);
+		PGBase obj2=new PGBase("r2",PGType.NO_TYPE);
+		
+		RuleBase ri1=new RuleIs(obj1,PGType.getType("Rect"));
+		obj1=ri1.apply();
+		RuleBase ri2=new RuleIs(obj2,PGType.getType("Rect"));
+		obj2=ri2.apply();
+		
+		
 		rootObject.addChild(obj1);
 		rootObject.addChild(obj2);
-		obj1.addChild(new PGInteger("width",80));
+		
+		PGBase width=new PGBase("width",PGType.NO_TYPE);
+		width=new RuleIs(width,PGType.INTEGER_TYPE).apply();
+		width=new RuleEquals(width,new PGInteger("",80)).apply();
+		
+		
+		obj1.addChild(width);
 		obj1.addChild(new PGInteger("height",300));
 		obj1.addChild(new PGInteger("x",80));
 		obj1.addChild(new PGInteger("y",80));

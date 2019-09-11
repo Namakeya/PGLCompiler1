@@ -34,4 +34,35 @@ public class PGVariable<T> extends PGObject {
 			
 		return pgn==null?new PGVariable<Object>(name,null):pgn;
 	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public PGBase clone() {
+		PGVariable copy=new PGVariable("",PGType.NO_TYPE);
+		
+		return clone(copy);
+	}
+	
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public PGBase clone(PGBase dest) {
+		
+		if(dest instanceof PGVariable) {
+			super.clone(dest);
+			((PGVariable)dest).var=this.var;
+		}else {
+			System.err.append("Failed to Clone! "+dest.toString()+" Type "+
+		dest.getClass().getSimpleName()+" cannot be casted to PGVariable.");
+		}
+		return dest;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof PGVariable) {
+			PGVariable pgv=(PGVariable)obj;
+			return pgv.var.equals(this.var);
+		}
+		return false;
+	}
 }

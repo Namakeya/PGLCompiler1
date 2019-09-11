@@ -19,6 +19,13 @@ public class PGType extends PGBase {
 		return type;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		return this==obj;
+	}
 	
-	public static PGType TYPE_TYPE=new PGType("Type");
+	
+	public static PGType TYPE_TYPE=getType("Type");
+	public static PGType NO_TYPE=getType("NoType");
+	public static PGType INTEGER_TYPE=getType("Variable_Integer");
 }

@@ -48,7 +48,7 @@ public abstract class PGNumber<T extends Number> extends PGVariable<T> {
 	
 	@SuppressWarnings("rawtypes")
 	public static PGNumber createNumberInstance(String name ,PGType type) {
-		if(type.getSimpleName()=="Variable_Integer") {
+		if(type==PGType.INTEGER_TYPE) {
 			return new PGInteger(name,0);
 		}else {
 			return null;

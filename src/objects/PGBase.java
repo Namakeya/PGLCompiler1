@@ -2,6 +2,7 @@ package objects;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 
 public class PGBase {
@@ -75,5 +76,35 @@ public class PGBase {
 	public PGType getType() {
 		return type;
 	}
+	
+	@Override
+	public PGBase clone() {
+		
+		return clone(new PGBase());
+	}
 
+	public PGBase clone(PGBase dest) {
+		dest.type=this.type;
+		for(Entry<String, PGBase> entry:this.children.entrySet()) {
+			dest.children.put(entry.getKey(), entry.getValue().clone());
+		}
+		return dest;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof PGBase) {
+			PGBase pgb=(PGBase)obj;
+			if(pgb.type==this.type) {
+				for(Entry<String, PGBase> entry:this.children.entrySet()) {
+					if(!entry.getValue().equals(pgb.children.get(entry.getKey()))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
 }
