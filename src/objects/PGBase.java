@@ -10,15 +10,17 @@ public class PGBase {
 	private Map<String,PGBase> children;
 	private PGBase parent;
 	private static Random random=new Random();
+	private PGType type;
 	
 	public PGBase() {
 		serial = random.nextLong();
 		children = new HashMap<String,PGBase>();
 		parent = null;
 	}
-	public PGBase(String name_){
+	public PGBase(String name_,PGType type){
 		this();
 		simpleName = name_;
+		this.type=type;
 	}
 	
 	public String getFullName() {
@@ -69,4 +71,9 @@ public class PGBase {
 		_addp(obj);
 		obj._addc(this);
 	}
+	
+	public PGType getType() {
+		return type;
+	}
+
 }

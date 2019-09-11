@@ -16,4 +16,22 @@ public class PGVariable<T> extends PGObject {
 	public String toString() {
 		return var.toString();
 	}
+	
+	@SuppressWarnings("rawtypes")
+	public static PGVariable createInstance(String name,Object var) {
+		if(var instanceof Number) {
+			PGNumber pgn=PGNumber.createNumberInstance(name,(Number)var);
+			
+			return pgn==null?new PGVariable<Number>(name,(Number)var):pgn;
+		}else {
+			return new PGVariable<Object>(name,var);
+		}
+	}
+	
+	@SuppressWarnings("rawtypes")
+	public static PGVariable createInstance(String name,PGType type) {
+		PGNumber pgn=PGNumber.createNumberInstance(name,type);
+			
+		return pgn==null?new PGVariable<Object>(name,null):pgn;
+	}
 }

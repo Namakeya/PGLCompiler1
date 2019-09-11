@@ -7,7 +7,7 @@ public class PGType extends PGBase {
 	public static Map<String,PGType> types=new HashMap<String,PGType>();
 	
 	public PGType(String name) {
-		super(name);
+		super(name,TYPE_TYPE);
 	}
 	
 	public static PGType getType(String name) {
@@ -18,4 +18,7 @@ public class PGType extends PGBase {
 		}
 		return type;
 	}
+	
+	
+	public static PGType TYPE_TYPE=new PGType("Type");
 }

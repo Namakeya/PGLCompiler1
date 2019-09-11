@@ -7,20 +7,20 @@ public class PGInteger extends PGNumber<Integer> {
 	}
 
 	@SuppressWarnings("rawtypes")
-	public int add(PGNumber n) {
+	public Integer add(PGNumber n) {
 		return this.getInt()+n.getInt();
 	}
 	
-	public int add(Number n) {
+	public Integer add(Number n) {
 		return this.getInt()+n.intValue();
 	}
 	
 	@SuppressWarnings("rawtypes")
-	public int sub(PGNumber n) {
+	public Integer sub(PGNumber n) {
 		return this.getInt()-n.getInt();
 	}
 	
-	public int sub(Number n) {
+	public Integer sub(Number n) {
 		return this.getInt()-n.intValue();
 	}
 
