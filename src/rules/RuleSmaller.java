@@ -22,14 +22,14 @@ public class RuleSmaller extends RuleBase{
 		if(this.object==null)this.object=PGBase.getPGFromFullpath(objectS);
 		if(this.subject instanceof PGNumber) {
 			if(this.object instanceof PGNumber) {
-				((PGNumber)this.subject).getRange().min=((PGNumber)this.object).getDouble();
+				((PGNumber)this.subject).getRange().max=((PGNumber)this.object).getDouble();
 				Main.dependenciesSolver.addNode(((PGNumber)this.subject));
 			}else {
-				System.err.println("Rule Bigger was applied to "+this.object.getFullName()
+				System.err.println("Rule Smaller was applied to "+this.object.getFullName()
 				+" but object was not a number.");
 			}
 		}else {
-			System.err.println("Rule Bigger was applied to "+this.subject.getFullName()
+			System.err.println("Rule Smaller was applied to "+this.subject.getFullName()
 			+" but subject was not a number.");
 		}
 		return this.subject;
@@ -39,13 +39,13 @@ public class RuleSmaller extends RuleBase{
 	public boolean check() {
 		if(this.subject instanceof PGNumber) {
 			if(this.object instanceof PGNumber) {
-				return ((PGNumber)this.subject).getDouble()>((PGNumber)this.object).getDouble();
+				return ((PGNumber)this.subject).getDouble()<((PGNumber)this.object).getDouble();
 			}else {
-				System.err.println("Rule Bigger was applied to "+this.object.getFullName()
+				System.err.println("Rule Smaller was applied to "+this.object.getFullName()
 				+" but object was not a number.");
 			}
 		}else {
-			System.err.println("Rule Bigger was applied to "+this.subject.getFullName()
+			System.err.println("Rule Smaller was applied to "+this.subject.getFullName()
 			+" but subject was not a number.");
 		}
 		return false;

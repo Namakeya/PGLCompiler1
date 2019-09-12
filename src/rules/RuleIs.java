@@ -20,14 +20,14 @@ public class RuleIs extends RuleBase {
 		this.type=PGType.getType(typeS);
 		this.subject=PGBase.getPGFromFullpath(subjectS);
 		PGBase parent=this.subject.getParent();
-		System.out.println(this.type.getFullName());
+		//System.out.println(this.type.getFullName());
 		//this.object=PGBase.getPGFromFullpath(objectS);
 		if(type.getSimpleName().contains("Variable_")) {
 			this.subject=PGVariable.createInstance(this.subject.getSimpleName(),type);
 		}else {
 			this.subject=new PGObject(this.subject.getSimpleName(),type);
 		}
-		
+		System.out.println("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
 		parent.addChild(subject);
 		return this.subject;
 	}

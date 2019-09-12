@@ -97,6 +97,21 @@ public class PGBase {
 	public boolean equals(Object obj) {
 		if(obj instanceof PGBase) {
 			PGBase pgb=(PGBase)obj;
+			if(pgb.type==this.type && pgb.getFullName().equals(this.getFullName())) {
+				for(Entry<String, PGBase> entry:this.children.entrySet()) {
+					if(!entry.getValue().equals(pgb.children.get(entry.getKey()))) {
+						return false;
+					}
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean equalsWithoutName(Object obj) {
+		if(obj instanceof PGBase) {
+			PGBase pgb=(PGBase)obj;
 			if(pgb.type==this.type) {
 				for(Entry<String, PGBase> entry:this.children.entrySet()) {
 					if(!entry.getValue().equals(pgb.children.get(entry.getKey()))) {

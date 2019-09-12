@@ -25,6 +25,7 @@ private List<PGVariable> nodes=new ArrayList<PGVariable>();
 	public void solve() {
 		for(PGVariable pgv:this.nodes) {
 			if(pgv instanceof PGNumber) {
+				//System.out.println(pgv.getFullName());
 				PGNumber pgn=((PGNumber)pgv);
 				pgn.set(pgn.getRange().get());
 			}

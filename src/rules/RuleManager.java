@@ -44,6 +44,7 @@ public class RuleManager {
 	
 	public void applyRules() {
 		for(RuleBase rb:this.rules) {
+			//System.out.println(rb.subjectS);
 			rb.apply();
 		}
 	}

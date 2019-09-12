@@ -5,22 +5,16 @@ public abstract class PGNumber<T extends Number> extends PGVariable<T> {
 		super(name_, var_);
 	}
 	public long getLong() {
-		return (long)this.get();
+		return this.get().longValue();
 	}
 	public int getInt() {
-		return (int)this.get();
-	}
-	public short getShort() {
-		return (short)this.get();
-	}
-	public byte getByte() {
-		return (byte)this.get();
+		return this.get().intValue();
 	}
 	public float getFloat() {
-		return (float)this.get();
+		return this.get().floatValue();
 	}
 	public double getDouble() {
-		return (double)this.get();
+		return this.get().doubleValue();
 	}
 	
 	@SuppressWarnings("rawtypes")

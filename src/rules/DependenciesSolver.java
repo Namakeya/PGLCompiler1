@@ -11,7 +11,9 @@ public class DependenciesSolver {
 	private List<PGVariable> nodes=new ArrayList<PGVariable>();
 	
 	public void addNode(PGVariable node) {
+		//System.out.println("add "+node.getFullName());
 		if(!this.nodes.contains(node)) {
+			
 			this.nodes.add(node);
 		}
 	}

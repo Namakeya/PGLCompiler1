@@ -4,16 +4,21 @@ import jframe.ReadImageUserInterface;
 import objects.PGDouble;
 import objects.PGObject;
 import objects.PGType;
+import objects.PGVariable;
 import rules.DependenciesSolver;
+import rules.RangeSolver;
+import rules.RuleBigger;
 import rules.RuleEquals;
 import rules.RuleIs;
 import rules.RuleManager;
+import rules.RuleSmaller;
 
 public class Main {
 	public static PGObject rootObject;
 	public static Renderer renderer;
 	public static RuleManager ruleManager;
 	public static DependenciesSolver dependenciesSolver;
+	public static RangeSolver rangeSolver;
 
 	public static void main(String[] args) {
 		System.out.println("Hello,world!");
@@ -22,20 +27,36 @@ public class Main {
 		rootObject=new PGObject("root",PGType.getType("Root"));
 		ruleManager=new RuleManager();
 		dependenciesSolver=new DependenciesSolver();
+		rangeSolver=new RangeSolver();
 		
 		//PGBase obj1=new PGBase("r1",PGType.NO_TYPE);
 		//PGBase obj2=new PGBase("r2",PGType.NO_TYPE);
 		
 		
 		ruleManager.addRules(new RuleIs("root.rect1","Rect"));
-		ruleManager.addRules(new RuleIs("root.rect2","Rect"));
+		//ruleManager.addRules(new RuleIs("root.rect2","Rect"));
 		
-		ruleManager.addRules(new RuleIs("root.rect1.width","Variable_Integer"));
-		ruleManager.addRules(new RuleEquals("root.rect1.width",new PGDouble("",80)));
+		ruleManager.addRules(new RuleIs("root.rect1.width","Variable_Double"));
+		ruleManager.addRules(new RuleIs("root.rect1.height","Variable_Double"));
+		ruleManager.addRules(new RuleIs("root.rect1.x","Variable_Double"));
+		ruleManager.addRules(new RuleIs("root.rect1.y","Variable_Double"));
+		ruleManager.addRules(new RuleIs("root.rect1.z","Variable_Double"));
+		ruleManager.addRules(new RuleIs("root.rect1.texture","Variable_String"));
+		ruleManager.addRules(new RuleEquals("root.rect1.width",new PGDouble("",200)));
+		ruleManager.addRules(new RuleBigger("root.rect1.height",new PGDouble("",10)));
+		ruleManager.addRules(new RuleSmaller("root.rect1.height",new PGDouble("",100)));
+		ruleManager.addRules(new RuleBigger("root.rect1.x",new PGDouble("",100)));
+		ruleManager.addRules(new RuleSmaller("root.rect1.x",new PGDouble("",300)));
+		ruleManager.addRules(new RuleBigger("root.rect1.y",new PGDouble("",100)));
+		ruleManager.addRules(new RuleSmaller("root.rect1.y",new PGDouble("",300)));
+		ruleManager.addRules(new RuleEquals("root.rect1.texture",new PGVariable<String>("","resource/concrete_white.png")));
 		ruleManager.sortRules();
 		ruleManager.applyRules();
+		rangeSolver.setNodes(dependenciesSolver.getNodes());
+		rangeSolver.solve();
+		
 		System.out.println(rootObject.getTreeString());
-		System.out.println(rootObject.getChild("rect1").getChild("width"));
+		System.out.println(rootObject.getChild("rect1").getChild("x"));
 		
 		/*
 		rootObject.addChild(obj1);

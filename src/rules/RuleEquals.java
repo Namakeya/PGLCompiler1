@@ -31,7 +31,7 @@ public class RuleEquals extends RuleBase{
 
 	@Override
 	public boolean check() {
-		return this.subject.equals(this.object);
+		return this.subject.equalsWithoutName(this.object);
 	}
 
 }

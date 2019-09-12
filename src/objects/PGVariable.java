@@ -5,12 +5,17 @@ import rules.Range;
 public class PGVariable<T> extends PGObject {
 
 	private T var;
+	/**unused*/
 	private boolean isConcrete=false;
-	private Range range;
+	private Range range=new Range();
 	
 	public PGVariable(String name,T var){
 		super(name, PGType.getType("Variable_"+var.getClass().getSimpleName()));
 		this.var=var;
+	}
+	
+	public PGVariable(String name,PGType type){
+		super(name, type);
 	}
 	
 	public T get() {return var;}
@@ -36,10 +41,10 @@ public class PGVariable<T> extends PGObject {
 	public static PGVariable createInstance(String name,PGType type) {
 		PGNumber pgn=PGNumber.createNumberInstance(name,type);
 			
-		return pgn==null?new PGVariable<Object>(name,null):pgn;
+		return pgn==null?new PGVariable<Object>(name,type):pgn;
 	}
 	
-	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@SuppressWarnings({ "rawtypes" })
 	@Override
 	public PGBase clone() {
 		PGVariable copy=new PGVariable("",PGType.NO_TYPE);
@@ -63,6 +68,15 @@ public class PGVariable<T> extends PGObject {
 	
 	@Override
 	public boolean equals(Object obj) {
+		if(obj instanceof PGVariable) {
+			PGVariable pgv=(PGVariable)obj;
+			return pgv.var.equals(this.var) && super.equals(obj);
+		}
+		return false;
+	}
+	
+	@Override
+	public boolean equalsWithoutName(Object obj) {
 		if(obj instanceof PGVariable) {
 			PGVariable pgv=(PGVariable)obj;
 			return pgv.var.equals(this.var);
