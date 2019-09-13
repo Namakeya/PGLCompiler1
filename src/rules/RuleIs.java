@@ -1,5 +1,6 @@
 package rules;
 
+import main.Main;
 import objects.PGBase;
 import objects.PGObject;
 import objects.PGType;
@@ -27,7 +28,7 @@ public class RuleIs extends RuleBase {
 		}else {
 			this.subject=new PGObject(this.subject.getSimpleName(),type);
 		}
-		System.out.println("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
+		Main.logger.fine("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
 		parent.addChild(subject);
 		return this.subject;
 	}

@@ -66,6 +66,7 @@ public class Renderer {
 				try {
 					texbi = ImageIO.read(new File(texname));
 				} catch (IOException e) {
+					Main.logger.severe("File "+texname+" does not exists!");
 					e.printStackTrace();
 				}
 				textures.put(texname, texbi);

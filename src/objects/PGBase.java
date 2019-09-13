@@ -132,10 +132,14 @@ public class PGBase {
 			if(s.equals("root")) {
 				pgb=Main.rootObject;
 			}else {
+				//System.out.println(s);
+				if(pgb==null) {
+					System.err.println("Object "+s+" does not exist.");
+				}
 				PGBase child=pgb.getChild(s);
 				if(child==null) {
 					//System.out.println(PGType.NO_TYPE);
-					child=new PGBase(s,PGType.NO_TYPE);
+					child=new PGDouble(s,0d);
 					pgb.addChild(child);
 				}
 				pgb=child;

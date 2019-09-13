@@ -3,6 +3,7 @@ package rules;
 import objects.PGBase;
 
 public abstract class RuleBase {
+	
 
 	public String subjectS;
 	public String objectS;

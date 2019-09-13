@@ -8,15 +8,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
  
 public class ReadImageUserInterface extends JFrame implements ActionListener{//[1]
     ReadImageComponent component = null;//[2]
     public ReadImageUserInterface () {//[3]
     	super();
-        setTitle("Java 画像サンプル");//[4]
+        setTitle("PGL Compiler 1");//[4]
         this.setPreferredSize(new Dimension(1024,512));
         setLayout(new BorderLayout());//[6]
         Container contentPane = getContentPane();//[7]
@@ -30,6 +32,7 @@ public class ReadImageUserInterface extends JFrame implements ActionListener{//[
         component.writeImage();//[21]
     }
     public void run() {//[30]
+    	
        
         WindowAdapter windowAdapter = new WindowAdapter(){
             public void windowClosing(WindowEvent e) {
@@ -39,5 +42,17 @@ public class ReadImageUserInterface extends JFrame implements ActionListener{//[
         this.addWindowListener(windowAdapter);//[33]
         this.pack();//[34]
         this.setVisible(true);//[35]
+    }
+    
+    public File loadFile() {
+    	JFileChooser filechooser = new JFileChooser();
+    	filechooser.setCurrentDirectory(new File("").getAbsoluteFile());
+        int selected = filechooser.showOpenDialog(this);
+        if (selected == JFileChooser.APPROVE_OPTION){
+          return filechooser.getSelectedFile();
+          
+        }else {
+        	 return null;
+        }
     }
 }

@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
 
 import main.Main;
 class ReadImageComponent extends Component {//[100]
@@ -37,9 +38,17 @@ class ReadImageComponent extends Component {//[100]
         return new Dimension(width, height);//[128]
     }
     void writeImage() {//[130]
-    	String imageFilename = "result/image.png";//[302]
+    	JFileChooser filechooser = new JFileChooser();
+    	filechooser.setCurrentDirectory(new File("").getAbsoluteFile());
+        int selected = filechooser.showSaveDialog(this);
+        File imageFilename=null;
+        if (selected == JFileChooser.APPROVE_OPTION){
+          imageFilename=filechooser.getSelectedFile();
+        }else {
+        	return;
+        }
         try {//[303]
-            ImageIO.write(bufferedImage, "png", new File(imageFilename));//[304]
+            ImageIO.write(bufferedImage, "png", imageFilename);//[304]
         } catch (Exception e) {//[305]
             System.out.println("image file write error. [" + imageFilename + "]");//[306]
         }

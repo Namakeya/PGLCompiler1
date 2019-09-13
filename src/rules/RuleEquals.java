@@ -1,5 +1,6 @@
 package rules;
 
+import main.Main;
 import objects.PGBase;
 import objects.PGType;
 
@@ -24,7 +25,7 @@ public class RuleEquals extends RuleBase{
 		
 		this.object.clone(this.subject);
 		if(type != PGType.NO_TYPE && !type.equals(this.subject.getType())) {
-			System.out.println("Type of "+this.subject+" has changed by "+this.object+"  from "+type+" to "+this.subject.getType());
+			Main.logger.fine("Type of "+this.subject.getFullName()+" has changed by "+this.object.getFullName()+"  from "+type.getFullName()+" to "+this.subject.getType().getFullName());
 		}
 		return this.subject;
 	}

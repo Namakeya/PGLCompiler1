@@ -1,38 +1,63 @@
 package main;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.List;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import jframe.ReadImageUserInterface;
-import objects.PGDouble;
 import objects.PGObject;
 import objects.PGType;
-import objects.PGVariable;
 import rules.DependenciesSolver;
 import rules.RangeSolver;
-import rules.RuleBigger;
-import rules.RuleEquals;
-import rules.RuleIs;
 import rules.RuleManager;
-import rules.RuleSmaller;
 
 public class Main {
+	//protected static final String ROOT_DIR = System.getProperty("user.dir");
+    protected static final String LOGGING_PROPERTIES = "logging.properties";
+    public static Logger logger=Logger.getLogger("Main");
+    
 	public static PGObject rootObject;
 	public static Renderer renderer;
 	public static RuleManager ruleManager;
 	public static DependenciesSolver dependenciesSolver;
 	public static RangeSolver rangeSolver;
+	public static TextAnalyzer textAnalyzer;
 
 	public static void main(String[] args) {
-		System.out.println("Hello,world!");
+		String filePath =  LOGGING_PROPERTIES;
+		InputStream inStream;
+
+
+		try {
+			inStream = new FileInputStream(filePath);
+			LogManager.getLogManager().readConfiguration(inStream);
+		} catch (SecurityException | IOException e) {
+			e.printStackTrace();
+		}
 		
+		logger.finest("Hello,world!");
+		
+		ReadImageUserInterface riui=new ReadImageUserInterface();
+		File input=riui.loadFile();
+		if(input==null)System.exit(0);
+		System.out.println(input.getAbsolutePath());
 		renderer=new Renderer();
 		rootObject=new PGObject("root",PGType.getType("Root"));
 		ruleManager=new RuleManager();
 		dependenciesSolver=new DependenciesSolver();
 		rangeSolver=new RangeSolver();
+		textAnalyzer=new TextAnalyzer();
 		
 		//PGBase obj1=new PGBase("r1",PGType.NO_TYPE);
 		//PGBase obj2=new PGBase("r2",PGType.NO_TYPE);
 		
-		
+		/*
 		ruleManager.addRules(new RuleIs("root.rect1","Rect"));
 		//ruleManager.addRules(new RuleIs("root.rect2","Rect"));
 		
@@ -50,13 +75,25 @@ public class Main {
 		ruleManager.addRules(new RuleBigger("root.rect1.y",new PGDouble("",100)));
 		ruleManager.addRules(new RuleSmaller("root.rect1.y",new PGDouble("",300)));
 		ruleManager.addRules(new RuleEquals("root.rect1.texture",new PGVariable<String>("","resource/concrete_white.png")));
+		*/
+		List<String> lines = null;
+		try {
+			lines = Files.readAllLines(input.toPath(), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		StringBuffer text=new StringBuffer();
+		for(String l:lines) {
+			text.append(l);
+		}
+		textAnalyzer.analyze(text.toString());
+		
 		ruleManager.sortRules();
 		ruleManager.applyRules();
 		rangeSolver.setNodes(dependenciesSolver.getNodes());
 		rangeSolver.solve();
 		
-		System.out.println(rootObject.getTreeString());
-		System.out.println(rootObject.getChild("rect1").getChild("x"));
+		logger.info(rootObject.getTreeString());
 		
 		/*
 		rootObject.addChild(obj1);
@@ -87,7 +124,7 @@ public class Main {
 		//System.out.println(new PGInteger(1).add(2));
 		renderer.beginRegister(rootObject);
 		
-		new ReadImageUserInterface().run();
+		riui.run();
 		
 	}
 

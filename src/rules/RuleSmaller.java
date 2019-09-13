@@ -25,11 +25,11 @@ public class RuleSmaller extends RuleBase{
 				((PGNumber)this.subject).getRange().max=((PGNumber)this.object).getDouble();
 				Main.dependenciesSolver.addNode(((PGNumber)this.subject));
 			}else {
-				System.err.println("Rule Smaller was applied to "+this.object.getFullName()
+				Main.logger.warning("Rule Smaller was applied to "+this.object.getFullName()
 				+" but object was not a number.");
 			}
 		}else {
-			System.err.println("Rule Smaller was applied to "+this.subject.getFullName()
+			Main.logger.warning("Rule Smaller was applied to "+this.subject.getFullName()
 			+" but subject was not a number.");
 		}
 		return this.subject;
@@ -41,11 +41,11 @@ public class RuleSmaller extends RuleBase{
 			if(this.object instanceof PGNumber) {
 				return ((PGNumber)this.subject).getDouble()<((PGNumber)this.object).getDouble();
 			}else {
-				System.err.println("Rule Smaller was applied to "+this.object.getFullName()
+				Main.logger.warning("Rule Smaller was applied to "+this.object.getFullName()
 				+" but object was not a number.");
 			}
 		}else {
-			System.err.println("Rule Smaller was applied to "+this.subject.getFullName()
+			Main.logger.warning("Rule Smaller was applied to "+this.subject.getFullName()
 			+" but subject was not a number.");
 		}
 		return false;

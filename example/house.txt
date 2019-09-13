@@ -1,0 +1,23 @@
+root.wall is Rect 
+& root.wall.width is double 
+& root.wall.width> 300 
+& root.wall.width < 500 
+& 200<root.wall.height<300 
+& root.wall.x=300
+& root.wall.y=50
+& root.wall.z=-10
+& root.wall.texture="resource/concrete_white.png" 
+&root.roof is Rect
+&500<root.roof.width<700
+& 10<root.roof.height<40
+&root.roof.x=250
+&root.roof.y=50
+&root.roof.z=10
+&root.roof.texture="resource/concrete_red.png"
+&root.window is Rect
+&100<root.window.width<150
+& 50<root.window.height<70
+&350<root.window.x<500
+&80<root.window.y<150
+&root.window.z=50
+&root.window.texture="resource/window.png"
