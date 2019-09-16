@@ -14,11 +14,11 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import objects.PGBase;
-import objects.PGDouble;
-import objects.PGObject;
-import objects.PGType;
 import objects.PGVariable;
+import objects.basic.PGBase;
+import objects.basic.PGDouble;
+import objects.basic.PGObject;
+import objects.basic.PGType;
 
 public class Renderer {
 	

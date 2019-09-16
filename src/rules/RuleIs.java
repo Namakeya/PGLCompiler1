@@ -1,35 +1,26 @@
 package rules;
 
 import main.Main;
-import objects.PGBase;
-import objects.PGObject;
-import objects.PGType;
-import objects.PGVariable;
+import objects.basic.PGBase;
+import objects.basic.PGObject;
+import objects.basic.PGType;
 
 public class RuleIs extends RuleBase {
-	
-	public String typeS;
+
+	public PGObject subject;
 	public PGType type;
-	
-	public RuleIs(String subjectS,String typeS) {
-		this.subjectS=subjectS;
+	public String typeS;
+
+	public RuleIs(PGObject sbj,String typeS) {
+		this.subject=sbj;
 		this.typeS=typeS;
 	}
 
 	@Override
 	public PGBase apply() {
 		this.type=PGType.getType(typeS);
-		this.subject=PGBase.getPGFromFullpath(subjectS);
-		PGBase parent=this.subject.getParent();
 		//System.out.println(this.type.getFullName());
-		//this.object=PGBase.getPGFromFullpath(objectS);
-		if(type.getSimpleName().contains("Variable_")) {
-			this.subject=PGVariable.createInstance(this.subject.getSimpleName(),type);
-		}else {
-			this.subject=new PGObject(this.subject.getSimpleName(),type);
-		}
 		Main.logger.fine("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
-		parent.addChild(subject);
 		return this.subject;
 	}
 

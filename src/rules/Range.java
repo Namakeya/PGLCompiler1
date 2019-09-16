@@ -2,19 +2,50 @@ package rules;
 
 import java.util.Random;
 
+import objects.basic.PGDouble;
+
 public class Range {
 
-	public double max=Double.MAX_VALUE/4;
-	public double min=Double.MIN_VALUE/4;
-	public static Random random=new Random();
-	
+	private PGDouble max;
+	private PGDouble min;
+	private static Random random=new Random();
+
 	public Range() {}
-	
-	public Range(double min,double max) {
-		this.min=min;this.max=max;
+
+	public Range(PGDouble min,PGDouble max) {
+		this.min=min;
+		this.max=max;
 	}
-	
+
+	public void setMin(PGDouble min) {
+		this.min=min;
+	}
+
+	public void setMax(PGDouble max) {
+		this.min=max;
+	}
+
 	public double get() {
-		return min+(max-min)*random.nextDouble();
+		double M,m;
+		if(max==null) {
+			M=0d;
+		}else{
+			M=max.getValue();
+		}
+		if(min==null) {
+			m=0d;
+		}else{
+			m=min.getValue();
+		}
+		if(M==m) {
+			return max.getValue();
+		}else {
+			return m+(M-m)*random.nextDouble();
+		}
+
+	}
+
+	public Range clone() {
+		return new Range(this.max,this.min);
 	}
 }

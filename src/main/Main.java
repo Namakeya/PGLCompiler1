@@ -11,8 +11,8 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import jframe.ReadImageUserInterface;
-import objects.PGObject;
-import objects.PGType;
+import objects.basic.PGObject;
+import objects.basic.PGType;
 import rules.DependenciesSolver;
 import rules.RangeSolver;
 import rules.RuleManager;

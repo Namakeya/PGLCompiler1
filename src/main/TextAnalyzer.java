@@ -2,8 +2,8 @@ package main;
 
 import java.util.logging.Logger;
 
-import objects.PGDouble;
 import objects.PGVariable;
+import objects.basic.PGDouble;
 import rules.RuleBigger;
 import rules.RuleEquals;
 import rules.RuleIs;
