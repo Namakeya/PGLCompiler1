@@ -34,7 +34,7 @@ public class RuleSmaller extends RuleBase{
 		}
 
 		this.subject.getRange().setMax(this.object);
-		Main.dependenciesSolver.addNode(this.subject);
+		Main.dependenciesSolver.addNode(this.subject,this.object);
 		return this.subject;
 	}
 

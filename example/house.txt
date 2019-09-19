@@ -1,6 +1,5 @@
 root.wall is Rect 
-& root.wall.width is double 
-& root.wall.width> 300 
+& root.wall.width> 300
 & root.wall.width < 500 
 & 200<root.wall.height<300 
 & root.wall.x=300
@@ -8,7 +7,8 @@ root.wall is Rect
 & root.wall.z=-10
 & root.wall.texture="resource/concrete_white.png" 
 &root.roof is Rect
-&500<root.roof.width<700
+&root.temp=root.wall.width
+&root.temp<root.roof.width<700
 & 10<root.roof.height<40
 &root.roof.x=250
 &root.roof.y=50

@@ -21,6 +21,7 @@ public class RuleFEquals extends RuleBase {
 
 	@Override
 	public PGBase apply() {
+
 		if(this.object==null&& this.objName!=null) {
 			PGBase.getPGFromFullpath(objName);
 		}

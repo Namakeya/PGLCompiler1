@@ -18,7 +18,9 @@ public class RuleIs extends RuleBase {
 
 	@Override
 	public PGBase apply() {
+		//System.out.println(this.subject.getFullName());
 		this.type=PGType.getType(typeS);
+		this.subject.setType(type);
 		//System.out.println(this.type.getFullName());
 		Main.logger.fine("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
 		return this.subject;

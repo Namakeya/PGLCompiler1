@@ -13,7 +13,7 @@ public abstract class PGFunction extends PGDouble {
 		params=new PGDouble[numOfParameters()];
 	}
 
-	abstract int numOfParameters();
+	public abstract int numOfParameters();
 
 
 	@Override

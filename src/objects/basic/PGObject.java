@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import main.Main;
+
 public class PGObject extends PGBase{
 
 
@@ -34,6 +36,10 @@ public class PGObject extends PGBase{
 
 	public PGType getType() {
 		return type;
+	}
+
+	public void setType(PGType type) {
+		this.type=type;
 	}
 	public PGBase clone() {
 
@@ -95,5 +101,37 @@ public class PGObject extends PGBase{
 	@Override
 	public String getTypeName() {
 		return this.getType().getSimpleName();
+	}
+
+	public static PGObject getOrCreateFromFullpath(String path) {
+		String[] names=path.split("\\.");
+		PGObject pgb=null;
+		for(String s:names) {
+			//System.out.println(s);
+			if(s.equals("root")) {
+				pgb=Main.rootObject;
+			}else {
+				//System.out.println(s);
+				if(pgb==null) {
+					Main.logger.severe("Object "+s+" does not exist.");
+				}
+				PGBase child=pgb.getChild(s);
+
+				if(child==null) {
+					//System.out.println(PGType.NO_TYPE);
+					child=new PGObject(s,PGType.NO_TYPE);
+					pgb.addChild(child);
+					pgb=(PGObject) child;
+				}else if(child instanceof PGObject) {
+					pgb=(PGObject) child;
+				}else {
+					Main.logger.severe(child.getFullName()+" is not an Object! This is "
+							+child.getClass().getSimpleName()+" instead.");
+				}
+
+			}
+
+		}
+		return pgb;
 	}
 }

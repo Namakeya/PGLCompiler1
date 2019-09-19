@@ -22,7 +22,14 @@ public class Range {
 	}
 
 	public void setMax(PGDouble max) {
-		this.min=max;
+		this.max=max;
+	}
+
+	public PGDouble getMax() {
+		return this.max;
+	}
+	public PGDouble getMin() {
+		return this.min;
 	}
 
 	public double get() {

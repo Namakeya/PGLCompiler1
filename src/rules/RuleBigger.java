@@ -34,7 +34,7 @@ public class RuleBigger extends RuleBase {
 		}
 
 		this.subject.getRange().setMin(this.object);
-		Main.dependenciesSolver.addNode(this.subject);
+		Main.dependenciesSolver.addNode(this.subject,this.object);
 		return this.subject;
 	}
 

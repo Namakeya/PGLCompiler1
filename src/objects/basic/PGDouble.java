@@ -9,6 +9,10 @@ public abstract class PGDouble extends PGBase {
 
 	abstract public double getValue();
 
+	public String toString() {
+		return this.getValue()+"";
+	}
+
 /*
 	@Override
 	public Double add(PGNumber n) {

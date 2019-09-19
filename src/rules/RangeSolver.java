@@ -3,32 +3,30 @@ package rules;
 import java.util.ArrayList;
 import java.util.List;
 
-import objects.PGNumber;
-import objects.PGVariable;
+import objects.basic.PGRanged;
 
 public class RangeSolver {
 //Solve range to concrete value.
-private List<PGVariable> nodes=new ArrayList<PGVariable>();
-	
-	public void addNode(PGVariable node) {
-		this.nodes.add(node);
+private List<PGRanged> nodes=new ArrayList<PGRanged>();
+
+	public void addNode(PGRanged node) {
+		if(!this.nodes.contains(node)) {
+			this.nodes.add(node);
+		}
 	}
-	
-	public List<PGVariable> getNodes(){
+
+	public List<PGRanged> getNodes(){
 		return this.nodes;
 	}
-	
-	public void setNodes( List<PGVariable> nodes) {
+
+	public void setNodes( List<PGRanged> nodes) {
 		this.nodes=nodes;
 	}
-	
+
 	public void solve() {
-		for(PGVariable pgv:this.nodes) {
-			if(pgv instanceof PGNumber) {
-				//System.out.println(pgv.getFullName());
-				PGNumber pgn=((PGNumber)pgv);
-				pgn.set(pgn.getRange().get());
-			}
+		for(PGRanged pgv:this.nodes) {
+			System.out.println(pgv.getFullName()+" "+pgv.getRange().getMin()+"~"+pgv.getRange().getMax());
+			pgv.setValue(pgv.getRange().get());
 		}
 	}
 }
