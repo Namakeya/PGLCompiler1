@@ -3,8 +3,10 @@ package rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import objects.basic.PGBase;
 import objects.basic.PGDouble;
 import objects.basic.PGRanged;
+import objects.basic.PGSymbol;
 import objects.function.PGFunction;
 
 public class DependenciesSolver {
@@ -26,8 +28,13 @@ public class DependenciesSolver {
 	 * ex) a < target < b then run solve(target,a) and solve(target,b)
 	 */
 	public void solve(PGRanged sbj,PGDouble pgd) {
+		//System.out.println(sbj.getFullName()+" "+pgd.getFullName());
+		if(pgd instanceof PGSymbol) {
+			pgd=(PGDouble) PGBase.getPGFromFullpath(pgd.getFullName());
+		}
 		if(pgd instanceof PGRanged) {
 			PGRanged pgr=(PGRanged) pgd;
+			
 			sbj.getAffectFrom().add(pgr);
 			pgr.getAffectTo().add(sbj);
 		}else if(pgd instanceof PGFunction) {
@@ -62,5 +69,7 @@ public class DependenciesSolver {
 		}
 		public PGRanged subject;
 		public PGDouble object;
+		
+		
 	}
 }

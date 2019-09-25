@@ -1,12 +1,21 @@
 package main;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import objects.basic.PGDouble;
 import objects.basic.PGLiteral;
 import objects.basic.PGObject;
 import objects.basic.PGRanged;
 import objects.basic.PGString;
+import objects.basic.PGSymbol;
+import objects.function.FunctionDivide;
 import objects.function.FunctionEquals;
+import objects.function.FunctionMinus;
+import objects.function.FunctionMultiply;
+import objects.function.FunctionPlus;
+import objects.function.PGFunction;
 import rules.RuleBigger;
 import rules.RuleFEquals;
 import rules.RuleIs;
@@ -16,6 +25,18 @@ import rules.RuleSmaller;
 public class TextAnalyzer {
 
 	public static Logger logger=Main.logger;
+	public static final Map<String,Class<? extends PGFunction>> operators=
+			new HashMap<String,Class<? extends PGFunction>>();
+	static {
+		//least priority
+		
+		operators.put("+", FunctionPlus.class);
+		operators.put("-", FunctionMinus.class);
+		operators.put("*", FunctionMultiply.class);
+		operators.put("/", FunctionDivide.class);
+		
+		//most priority
+	}
 
 	public void analyze(String text) {
 		text=text.replaceAll("\r\n|[\n\r\u2028\u2029\u0085]", "");
@@ -36,18 +57,9 @@ public class TextAnalyzer {
 					String str=patt[1].replace("\"", "");
 					Main.ruleManager.addRules(new RuleSEquals(PGString.getOrCreateFromFullpath(patt[0]),str));
 				}else {
-					try {
-
-						Main.ruleManager.addRules(new RuleFEquals
-								(FunctionEquals.getOrCreateFromFullpath(patt[0])
-										,new PGLiteral(Double.parseDouble(patt[1]))));
-						//System.out.println("number");
-					}catch(NumberFormatException e) {
-						//System.out.println("not number");
-						Main.ruleManager.addRules(new RuleFEquals
-								(FunctionEquals.getOrCreateFromFullpath(patt[0])
-										,(FunctionEquals.getOrCreateFromFullpath(patt[1]))));
-					}
+					Main.ruleManager.addRules(new RuleFEquals
+							(FunctionEquals.getOrCreateFromFullpath(patt[0])
+									,this.interpretFormula(patt[1])));
 				}
 				continue;
 			}
@@ -55,54 +67,26 @@ public class TextAnalyzer {
 			if(patt.length>1) {
 				patt=clean(patt);
 
-				try {
+				Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
+						(patt[0]),this.interpretFormula(patt[1])));
 
-					Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-							(patt[0]),new PGLiteral(Double.parseDouble(patt[1]))));
-					//System.out.println("number");
-				}catch(NumberFormatException e) {
-					//System.out.println("not number");
-					Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-							(patt[0]),FunctionEquals.getOrCreateFromFullpath(patt[1])));
-				}
 				continue;
 			}
 			patt=sec.split("<");
 			if(patt.length==2) {
 				patt=clean(patt);
+				Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
+						(patt[0]),this.interpretFormula(patt[1])));
 
-				try {
-					Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-							(patt[0]),new PGLiteral(Double.parseDouble(patt[1]))));
-					//System.out.println("number");
-				}catch(NumberFormatException e) {
-					//System.out.println("not number");
-					Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-							(patt[0]),FunctionEquals.getOrCreateFromFullpath(patt[1])));
-				}
 				continue;
 			}else if(patt.length==3) {
 				patt=clean(patt);
 
-				try {
+				Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
+						(patt[1]),this.interpretFormula(patt[0])));
 
-					Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-							(patt[1]),new PGLiteral(Double.parseDouble(patt[0]))));
-					//System.out.println("number");
-				}catch(NumberFormatException e) {
-					//System.out.println("not number");
-					Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-							(patt[1]),FunctionEquals.getOrCreateFromFullpath(patt[0])));
-				}
-				try {
-					Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-							(patt[1]),new PGLiteral(Double.parseDouble(patt[2]))));
-					//System.out.println("number");
-				}catch(NumberFormatException e) {
-					//System.out.println("not number");
-					Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-							(patt[1]),FunctionEquals.getOrCreateFromFullpath(patt[2])));
-				}
+				Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
+						(patt[1]),this.interpretFormula(patt[2])));
 				continue;
 			}
 		}
@@ -124,5 +108,59 @@ public class TextAnalyzer {
 		}
 		return newtext;
 	}
+	
+	public PGDouble execTextAsLiteralOrSymbol(String text) {
+		Double d=null;
+		try {
+			d=Double.parseDouble(text);
+		}catch(NumberFormatException e) {
+			return new PGSymbol(text);
+		}
+		return new PGLiteral(d);
+	}
+	
+	public PGDouble interpretFormula(String text) {
+		if(text.startsWith("+")) {
+			text="0"+text;
+		}else if(text.startsWith("-")) {
+			text="0"+text;
+		}
+		return interpretFormula(text,0);
+	}
+	
+	public PGDouble interpretFormula(String text,int operator) {
+		if(operator>=operators.size()) {
+			return this.execTextAsLiteralOrSymbol(text);
+		}
+		String[] keys=operators.keySet().toArray(new String[0]);
+		if(!text.contains(keys[operator])) {
+			return interpretFormula(text,operator+1);
+		}
+		
+		int j=text.indexOf(keys[operator]);
+		String patt1=text.substring(0, j);
+		String patt2=text.substring(j+1);
+		
+		Class[] values=operators.values().toArray(new Class[0]);
+		PGFunction pgf = null;
+		
+		try {
+			pgf=(PGFunction) values[operator].newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		pgf.setParams(new PGDouble[]{interpretFormula(patt1,operator+1),interpretFormula(patt2,operator)});
+		return pgf;
+	}
 
+	public boolean containsOperator(String text,int operator) {
+		String[] keys=operators.keySet().toArray(new String[0]);
+		for(int i=operator;i<operators.size();i++) {
+			
+			if(text.contains(keys[i])) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

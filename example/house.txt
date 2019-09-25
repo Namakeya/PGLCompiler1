@@ -7,8 +7,7 @@ root.wall is Rect
 & root.wall.z=-10
 & root.wall.texture="resource/concrete_white.png" 
 &root.roof is Rect
-&root.temp=root.wall.width
-&root.temp<root.roof.width<700
+&root.wall.width<root.roof.width<root.wall.width+300
 & 10<root.roof.height<40
 &root.roof.x=250
 &root.roof.y=50
@@ -21,3 +20,10 @@ root.wall is Rect
 &80<root.window.y<150
 &root.window.z=50
 &root.window.texture="resource/window.png"
+&root.door is Rect
+&root.wall.x<root.door.x<root.wall.x+root.wall.width-root.door.width
+&root.door.y=root.wall.y+root.wall.height-root.door.height
+&root.door.z=60
+&root.door.width=30+root.door.height*0.4
+&root.door.height=root.wall.height/2
+&root.door.texture="resource/wood.jpg"

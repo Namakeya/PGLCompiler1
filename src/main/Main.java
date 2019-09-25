@@ -94,7 +94,7 @@ public class Main {
 		for(DependenciesSolver.Node node:dependenciesSolver.getNodes()) {
 			rangeSolver.addNode(node.subject);
 		}
-		rangeSolver.solve();
+		rangeSolver.solveAll();
 
 		logger.info(rootObject.getTreeString());
 

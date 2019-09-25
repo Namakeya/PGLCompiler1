@@ -15,6 +15,7 @@ public class RuleManager {
 		this.rules.add(rb);
 	}
 
+	//TODO Needs a better way of sort.
 	public void sortRules() {
 		Comparator<RuleBase> c= new Comparator<RuleBase>() {
 
@@ -45,6 +46,7 @@ public class RuleManager {
 	public void applyRules() {
 		for(RuleBase rb:this.rules) {
 			//System.out.println(rb.subjectS);
+			
 			rb.apply();
 		}
 	}

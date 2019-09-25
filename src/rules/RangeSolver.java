@@ -23,10 +23,34 @@ private List<PGRanged> nodes=new ArrayList<PGRanged>();
 		this.nodes=nodes;
 	}
 
-	public void solve() {
-		for(PGRanged pgv:this.nodes) {
-			System.out.println(pgv.getFullName()+" "+pgv.getRange().getMin()+"~"+pgv.getRange().getMax());
-			pgv.setValue(pgv.getRange().get());
+	public void solveAll() {
+		List<PGRanged> list=new ArrayList<PGRanged>();
+		for(PGRanged pgr:this.nodes) {
+			if(pgr.getAffectFrom().isEmpty()) {
+				list.add(pgr);
+			}
+		}
+		for(PGRanged pgr:this.nodes) {
+			System.out.println(pgr.getFullName()+" "+pgr.getRange().getMin()+"~"+pgr.getRange().getMax());
+			solve(pgr);
+		}
+	}
+	
+	public void solve(PGRanged node) {
+		node.setValue(node.getRange().get());
+		for(PGRanged pgr:node.getAffectTo()) {
+			if(!pgr.isValueDetermined()) {
+				boolean flag=false;
+				for(PGRanged aff:pgr.getAffectFrom()) {
+					if(!aff.isValueDetermined()) {
+						flag=true;
+						break;
+					}
+				}
+				if(!flag) {
+					solve(pgr);
+				}
+			}
 		}
 	}
 }

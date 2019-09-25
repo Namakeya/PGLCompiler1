@@ -26,6 +26,7 @@ public class PGRanged extends PGDouble{
 	}
 
 	public void setValue(double value) {
+		System.out.println("value set "+this.getFullName());
 		this.value=value;
 	}
 
