@@ -3,6 +3,7 @@ package rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Main;
 import objects.basic.PGRanged;
 
 public class RangeSolver {
@@ -31,7 +32,7 @@ private List<PGRanged> nodes=new ArrayList<PGRanged>();
 			}
 		}
 		for(PGRanged pgr:this.nodes) {
-			System.out.println(pgr.getFullName()+" "+pgr.getRange().getMin()+"~"+pgr.getRange().getMax());
+			Main.logger.fine(pgr.getFullName()+" range: "+pgr.getRange().getMin()+"~"+pgr.getRange().getMax());
 			solve(pgr);
 		}
 	}

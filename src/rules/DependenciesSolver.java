@@ -3,6 +3,7 @@ package rules;
 import java.util.ArrayList;
 import java.util.List;
 
+import main.Main;
 import objects.basic.PGBase;
 import objects.basic.PGDouble;
 import objects.basic.PGRanged;
@@ -48,13 +49,15 @@ public class DependenciesSolver {
 	}
 
 	public void solveAll() {
+		Main.logger.fine("analyze dependencies");
 		for(Node node:nodes) {
 			solve(node.subject,node.object);
 			for(PGRanged pgr:node.subject.getAffectFrom()) {
-				System.out.println(pgr.getFullName());
+				Main.logger.fine(pgr.getFullName());
 			}
-			System.out.println("->"+node.subject.getFullName());
+			Main.logger.fine("->"+node.subject.getFullName());
 		}
+		Main.logger.fine("end analyzing");
 	}
 
 	public List<Node> getNodes(){

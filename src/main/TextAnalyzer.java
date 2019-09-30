@@ -39,10 +39,11 @@ public class TextAnalyzer {
 	}
 
 	public void analyze(String text) {
+		logger.fine("start analyzing text");
 		text=text.replaceAll("\r\n|[\n\r\u2028\u2029\u0085]", "");
 		String[] secs=text.split("&");
 		for(String sec:secs) {
-			logger.fine("..."+sec);
+			logger.finer("..."+sec);
 			String[] patt=sec.split(" is ");
 			if(patt.length>1) {
 				patt=clean(patt);
@@ -90,6 +91,7 @@ public class TextAnalyzer {
 				continue;
 			}
 		}
+		logger.fine("end analyzing text");
 	}
 
 	public String clean(String text) {
