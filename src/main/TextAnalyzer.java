@@ -10,6 +10,7 @@ import objects.basic.PGObject;
 import objects.basic.PGRanged;
 import objects.basic.PGString;
 import objects.basic.PGSymbol;
+import objects.basic.PGType;
 import objects.function.FunctionDivide;
 import objects.function.FunctionEquals;
 import objects.function.FunctionMinus;
@@ -17,6 +18,7 @@ import objects.function.FunctionMultiply;
 import objects.function.FunctionPlus;
 import objects.function.PGFunction;
 import rules.RuleBigger;
+import rules.RuleExtends;
 import rules.RuleFEquals;
 import rules.RuleIs;
 import rules.RuleSEquals;
@@ -29,12 +31,12 @@ public class TextAnalyzer {
 			new HashMap<String,Class<? extends PGFunction>>();
 	static {
 		//least priority
-		
+
 		operators.put("+", FunctionPlus.class);
 		operators.put("-", FunctionMinus.class);
 		operators.put("*", FunctionMultiply.class);
 		operators.put("/", FunctionDivide.class);
-		
+
 		//most priority
 	}
 
@@ -51,6 +53,15 @@ public class TextAnalyzer {
 				Main.ruleManager.addRules(new RuleIs(PGObject.getOrCreateFromFullpath(patt[0]),patt[1]));
 				continue;
 			}
+
+			patt=sec.split(" extends ");
+			if(patt.length>1) {
+				patt=clean(patt);
+
+				Main.ruleManager.addRules(new RuleExtends(PGType.getType(patt[0]),patt[1]));
+				continue;
+			}
+
 			patt=sec.split("=");
 			if(patt.length>1) {
 				patt=clean(patt);
@@ -110,7 +121,7 @@ public class TextAnalyzer {
 		}
 		return newtext;
 	}
-	
+
 	public PGDouble execTextAsLiteralOrSymbol(String text) {
 		Double d=null;
 		try {
@@ -120,7 +131,7 @@ public class TextAnalyzer {
 		}
 		return new PGLiteral(d);
 	}
-	
+
 	public PGDouble interpretFormula(String text) {
 		if(text.startsWith("+")) {
 			text="0"+text;
@@ -129,7 +140,7 @@ public class TextAnalyzer {
 		}
 		return interpretFormula(text,0);
 	}
-	
+
 	public PGDouble interpretFormula(String text,int operator) {
 		if(operator>=operators.size()) {
 			return this.execTextAsLiteralOrSymbol(text);
@@ -138,14 +149,14 @@ public class TextAnalyzer {
 		if(!text.contains(keys[operator])) {
 			return interpretFormula(text,operator+1);
 		}
-		
+
 		int j=text.indexOf(keys[operator]);
 		String patt1=text.substring(0, j);
 		String patt2=text.substring(j+1);
-		
+
 		Class[] values=operators.values().toArray(new Class[0]);
 		PGFunction pgf = null;
-		
+
 		try {
 			pgf=(PGFunction) values[operator].newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
@@ -158,7 +169,7 @@ public class TextAnalyzer {
 	public boolean containsOperator(String text,int operator) {
 		String[] keys=operators.keySet().toArray(new String[0]);
 		for(int i=operator;i<operators.size();i++) {
-			
+
 			if(text.contains(keys[i])) {
 				return true;
 			}

@@ -26,13 +26,18 @@ public class RuleManager {
 					i1=10;
 				}else if(o1 instanceof RuleFEquals) {
 					i1=20;
+				}else if(o1 instanceof RuleExtends) {
+					i1=5;
 				}else {
 					i1=30;
 				}
+
 				if(o2 instanceof RuleIs) {
 					i2=10;
 				}else if(o2 instanceof RuleFEquals) {
 					i2=20;
+				}else if(o2 instanceof RuleExtends) {
+					i2=5;
 				}else {
 					i2=30;
 				}
@@ -46,7 +51,7 @@ public class RuleManager {
 	public void applyRules() {
 		for(RuleBase rb:this.rules) {
 			//System.out.println(rb.subjectS);
-			
+
 			rb.apply();
 		}
 	}

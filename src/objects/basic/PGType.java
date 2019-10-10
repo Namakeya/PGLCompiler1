@@ -3,8 +3,18 @@ package objects.basic;
 import java.util.HashMap;
 import java.util.Map;
 
+import main.Main;
+
 public class PGType extends PGBase {
+	public static PGType NO_TYPE=getType("NoType");
+	public static PGType OBJECT_TYPE;
+	static {
+		OBJECT_TYPE=getType("Object");
+		OBJECT_TYPE.setTemplate(new PGObject("",OBJECT_TYPE));
+	}
 	public static Map<String,PGType> types=new HashMap<String,PGType>();
+	private PGObject template;
+	private PGType parent;
 
 	public PGType(String name) {
 		super(name);
@@ -14,9 +24,15 @@ public class PGType extends PGBase {
 		PGType type=types.get(name);
 		if(type==null) {
 			type=new PGType(name);
-			types.put(name, type);
+			type.setParentType(OBJECT_TYPE);
+			addType(type);
+			Main.logger.info("type "+name+" does not exist. The type was created as a child of Object.");
 		}
 		return type;
+	}
+
+	public static void addType(PGType type) {
+		types.put(type.getSimpleName(), type);
 	}
 
 	@Override
@@ -25,9 +41,7 @@ public class PGType extends PGBase {
 	}
 
 
-	public static PGType NO_TYPE=getType("NoType");
-	public static PGType INTEGER_TYPE=getType("Variable_Integer");
-	public static PGType DOUBLE_TYPE=getType("Variable_Double");
+
 
 	@Override
 	public PGBase clone() {
@@ -43,5 +57,22 @@ public class PGType extends PGBase {
 			}
 		}
 		return false;
+	}
+
+	public PGObject getTemplate() {
+		return template;
+	}
+
+	public void setTemplate(PGObject template) {
+		this.template = template;
+	}
+
+	public PGType getParentType() {
+		return parent;
+	}
+
+	public void setParentType(PGType parent) {
+		this.parent = parent;
+		this.template=(PGObject) parent.getTemplate().clone();
 	}
 }
