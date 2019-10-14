@@ -19,7 +19,7 @@ public class RuleExtends extends RuleBase {
 	public PGBase apply() {
 		//System.out.println(this.subject.getFullName());
 		this.type=PGType.getType(typeS);
-		this.subject.setParentType(type);
+		this.subject.addParent(type);
 		//System.out.println(this.type.getFullName());
 		Main.logger.fine("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
 		return this.subject;
@@ -27,7 +27,7 @@ public class RuleExtends extends RuleBase {
 
 	@Override
 	public boolean check() {
-		return this.subject.getParentType()==this.type;
+		return this.subject.getParent()==this.type;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import objects.basic.PGBase;
 import objects.basic.PGDouble;
 import objects.basic.PGLiteral;
 import objects.basic.PGObject;
@@ -50,7 +51,8 @@ public class TextAnalyzer {
 			if(patt.length>1) {
 				patt=clean(patt);
 
-				Main.ruleManager.addRules(new RuleIs(PGObject.getOrCreateFromFullpath(patt[0]),patt[1]));
+				Main.ruleManager.addRules(new RuleIs(
+						(PGObject) PGBase.getOrCreateFromFullpath(patt[0],PGObject.class),patt[1]));
 				continue;
 			}
 
@@ -67,10 +69,11 @@ public class TextAnalyzer {
 				patt=clean(patt);
 				if(patt[1].startsWith("\"") && patt[1].endsWith("\"")) {
 					String str=patt[1].replace("\"", "");
-					Main.ruleManager.addRules(new RuleSEquals(PGString.getOrCreateFromFullpath(patt[0]),str));
+					Main.ruleManager.addRules(new RuleSEquals
+							((PGString) PGBase.getOrCreateFromFullpath(patt[0],PGString.class),str));
 				}else {
 					Main.ruleManager.addRules(new RuleFEquals
-							(FunctionEquals.getOrCreateFromFullpath(patt[0])
+							((FunctionEquals)PGBase.getOrCreateFromFullpath(patt[0],FunctionEquals.class)
 									,this.interpretFormula(patt[1])));
 				}
 				continue;
@@ -79,26 +82,26 @@ public class TextAnalyzer {
 			if(patt.length>1) {
 				patt=clean(patt);
 
-				Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-						(patt[0]),this.interpretFormula(patt[1])));
+				Main.ruleManager.addRules(new RuleBigger((PGRanged) PGBase.getOrCreateFromFullpath
+						(patt[0],PGRanged.class),this.interpretFormula(patt[1])));
 
 				continue;
 			}
 			patt=sec.split("<");
 			if(patt.length==2) {
 				patt=clean(patt);
-				Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-						(patt[0]),this.interpretFormula(patt[1])));
+				Main.ruleManager.addRules(new RuleSmaller((PGRanged) PGBase.getOrCreateFromFullpath
+						(patt[0],PGRanged.class),this.interpretFormula(patt[1])));
 
 				continue;
 			}else if(patt.length==3) {
 				patt=clean(patt);
 
-				Main.ruleManager.addRules(new RuleBigger(PGRanged.getOrCreateFromFullpath
-						(patt[1]),this.interpretFormula(patt[0])));
+				Main.ruleManager.addRules(new RuleBigger((PGRanged) PGBase.getOrCreateFromFullpath
+						(patt[1],PGRanged.class),this.interpretFormula(patt[0])));
 
-				Main.ruleManager.addRules(new RuleSmaller(PGRanged.getOrCreateFromFullpath
-						(patt[1]),this.interpretFormula(patt[2])));
+				Main.ruleManager.addRules(new RuleSmaller((PGRanged) PGBase.getOrCreateFromFullpath
+						(patt[1],PGRanged.class),this.interpretFormula(patt[2])));
 				continue;
 			}
 		}

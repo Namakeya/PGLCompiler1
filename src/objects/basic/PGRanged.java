@@ -13,6 +13,14 @@ public class PGRanged extends PGDouble{
 	private List<PGRanged> affectTo=new ArrayList<PGRanged>();
 	private List<PGRanged> affectFrom=new ArrayList<PGRanged>();
 
+	public PGRanged(String name_) {
+		super(name_);
+	}
+	
+	public PGRanged() {
+		this("");
+	}
+
 	public Range getRange() {
 		return range;
 	}
@@ -21,9 +29,6 @@ public class PGRanged extends PGDouble{
 		this.range = range;
 	}
 
-	public PGRanged(String name_) {
-		super(name_);
-	}
 
 	public void setValue(double value) {
 		Main.logger.fine("value of "+this.getFullName()+" was set to "+value);
@@ -63,42 +68,6 @@ public class PGRanged extends PGDouble{
 			}
 		}
 		return false;
-	}
-
-	public static PGRanged getOrCreateFromFullpath(String path) {
-		String[] names=path.split("\\.");
-		PGObject pgb=null;
-		for(String s:names) {
-			//System.out.println(s);
-			if(s.equals("root")) {
-				pgb=Main.rootObject;
-			}else {
-				//System.out.println(s);
-				if(pgb==null) {
-					Main.logger.severe("Object "+s+" does not exist.");
-				}
-				PGBase child=pgb.getChild(s);
-
-				if(child==null) {
-					//System.out.println(PGType.NO_TYPE);
-					child=new PGRanged(s);
-					pgb.addChild(child);
-					return (PGRanged) child;
-				}else if(child instanceof PGRanged) {
-					return (PGRanged) child;
-				}else if(child instanceof PGObject){
-					pgb=(PGObject) child;
-					continue;
-				}else {
-					Main.logger.severe(child.getFullName()+" is not a Ranged Double! This is "
-							+child.getClass().getSimpleName()+" instead.");
-				}
-
-
-			}
-
-		}
-		return null;
 	}
 
 	public List<PGRanged> getAffectTo() {

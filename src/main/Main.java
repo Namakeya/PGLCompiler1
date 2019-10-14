@@ -90,13 +90,14 @@ public class Main {
 
 		ruleManager.sortRules();
 		ruleManager.applyRules();
+		logger.info(rootObject.getTreeString());
 		dependenciesSolver.solveAll();
 		for(DependenciesSolver.Node node:dependenciesSolver.getNodes()) {
 			rangeSolver.addNode(node.subject);
 		}
 		rangeSolver.solveAll();
 
-		logger.info(rootObject.getTreeString());
+		
 
 		/*
 		rootObject.addChild(obj1);

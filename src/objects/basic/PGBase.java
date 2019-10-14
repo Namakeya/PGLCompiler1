@@ -33,6 +33,18 @@ abstract public class PGBase {
 	public String getSimpleName() {
 		return this.simpleName;
 	}
+	
+	public void setSimpleName(String simpleName) {
+		
+		if(this.parent instanceof PGObject) {
+			PGObject pgo=(PGObject)this.parent;
+			//System.out.println(pgo.getChildren().containsKey(this.simpleName));
+			pgo.getChildren().remove(this.simpleName, this);
+			pgo.getChildren().put(simpleName, this);
+		}
+		this.simpleName=simpleName;
+		
+	}
 
 
 	public long getSerial()
@@ -94,8 +106,64 @@ abstract public class PGBase {
 		}
 		return pgb;
 	}
+	
 
 
+	public static PGBase getOrCreateFromFullpath(String path,Class<? extends PGBase> cls) {
+		
+		
+		String[] names=path.split("\\.");
+		PGObject pgb=null;
+		if(names[0].equals("root")) {
+			pgb=Main.rootObject;
+		}else if(PGType.getType(names[0])!=null){
+			pgb=PGType.getType(names[0]).getTemplate();
+			//System.out.println("adding "+path+" to "+pgb.getTypeName());
+		}else {
+			Main.logger.severe("Unknown root object "+names[0]);
+		}
+		PGBase child=pgb.getChild(names[1]);
+		for(int i=1;i<names.length-1;i++) {
+			String s=names[i];
+			if(pgb==null) {
+				Main.logger.severe("Object "+s+" does not exist.");
+			}
+
+			if(child==null) {
+				child=new PGObject(s,PGType.NO_TYPE);
+				pgb.addChild(child);
+				pgb=(PGObject) child;
+			}else if(child instanceof PGObject){
+				pgb=(PGObject) child;
+			}else {
+				Main.logger.severe(child.getFullName()+" is not an object. This is "
+						+child.getClass().getSimpleName()+" instead.");
+			}
+			//System.out.println(pgb.getFullName()+"'s child "+names[i+1]);
+			child=pgb.getChild(names[i+1]);
+		}
+
+		if(child==null) {
+			try {
+				child=cls.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			
+			pgb.addChild(child);
+			child.setSimpleName(names[names.length-1]);
+			//System.out.println("created "+child.getFullName()+" to "+pgb.getFullName());
+			return child;
+		}else if(cls.isInstance(child)) {
+			//System.out.println(child.getFullName()+" exists");
+			return child;
+		}else {
+			Main.logger.severe(child.getFullName()+" is not "+cls.getSimpleName()+". This is "
+					+child.getClass().getSimpleName()+" instead.");
+		}
+
+		return null;
+	}
 
 	public String getTypeName() {
 		return this.getClass().getSimpleName();

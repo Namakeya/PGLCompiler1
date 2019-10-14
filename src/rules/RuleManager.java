@@ -23,7 +23,7 @@ public class RuleManager {
 			public int compare(RuleBase o1, RuleBase o2) {
 				int i1,i2;
 				if(o1 instanceof RuleIs) {
-					i1=10;
+					i1=40;
 				}else if(o1 instanceof RuleFEquals) {
 					i1=20;
 				}else if(o1 instanceof RuleExtends) {
@@ -33,7 +33,7 @@ public class RuleManager {
 				}
 
 				if(o2 instanceof RuleIs) {
-					i2=10;
+					i2=40;
 				}else if(o2 instanceof RuleFEquals) {
 					i2=20;
 				}else if(o2 instanceof RuleExtends) {

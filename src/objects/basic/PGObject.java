@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import main.Main;
-
 public class PGObject extends PGBase{
 
 
 	private PGType type;
 	private Map<String,PGBase> children = new HashMap<String,PGBase>();
+	
+	public PGObject() {
+		this("",PGType.NO_TYPE);
+	}
 
 	public PGObject(String name_,PGType type) {
 		super(name_);
@@ -30,6 +32,9 @@ public class PGObject extends PGBase{
 	}
 
 	public void addChild(PGBase obj) {
+		if(this instanceof PGType) {
+			System.out.println(obj.getFullName()+" was added to "+this.getFullName());
+		}
 		_addc(obj);
 		obj._addp(this);
 	}
@@ -38,20 +43,30 @@ public class PGObject extends PGBase{
 		return type;
 	}
 
+	/**do not change type except NO_TYPE*/
 	public void setType(PGType type) {
-		this.type=type;
+		if(type.getTemplate()!=null) {
+			
+			type.getTemplate().clone(this);
+			//System.out.println(this.getFullName()+" type is now "+this.getTypeName());
+		}else {
+			this.type=type;
+		}
 	}
 	public PGBase clone() {
 
-		return clone(new PGObject("",PGType.NO_TYPE));
+		return clone(new PGObject(this.getSimpleName(),PGType.NO_TYPE));
 	}
 
 
 	public PGBase clone(PGObject dest) {
+		//System.out.println("dest type:"+dest.getTypeName()+" this type:"+this.getTypeName());
 		dest.type=this.type;
 		for(Entry<String, PGBase> entry:this.children.entrySet()) {
 			dest.children.put(entry.getKey(), entry.getValue().clone());
+			//System.out.println("put "+entry.getKey());
 		}
+		//System.out.println("dest type:"+dest.getTypeName());
 		return dest;
 	}
 
@@ -103,35 +118,4 @@ public class PGObject extends PGBase{
 		return this.getType().getSimpleName();
 	}
 
-	public static PGObject getOrCreateFromFullpath(String path) {
-		String[] names=path.split("\\.");
-		PGObject pgb=null;
-		for(String s:names) {
-			//System.out.println(s);
-			if(s.equals("root")) {
-				pgb=Main.rootObject;
-			}else {
-				//System.out.println(s);
-				if(pgb==null) {
-					Main.logger.severe("Object "+s+" does not exist.");
-				}
-				PGBase child=pgb.getChild(s);
-
-				if(child==null) {
-					//System.out.println(PGType.NO_TYPE);
-					child=new PGObject(s,PGType.NO_TYPE);
-					pgb.addChild(child);
-					pgb=(PGObject) child;
-				}else if(child instanceof PGObject) {
-					pgb=(PGObject) child;
-				}else {
-					Main.logger.severe(child.getFullName()+" is not an Object! This is "
-							+child.getClass().getSimpleName()+" instead.");
-				}
-
-			}
-
-		}
-		return pgb;
-	}
 }
