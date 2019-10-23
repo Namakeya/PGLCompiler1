@@ -1,8 +1,10 @@
 package rules;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+
+import main.Main;
+import objects.basic.PGBase;
 
 public class RuleManager {
 	public List<RuleBase> rules=new ArrayList<RuleBase>();
@@ -13,46 +15,58 @@ public class RuleManager {
 
 	public void addRules(RuleBase rb) {
 		this.rules.add(rb);
-	}
-
-	//TODO Needs a better way of sort.
-	public void sortRules() {
-		Comparator<RuleBase> c= new Comparator<RuleBase>() {
-
-			@Override
-			public int compare(RuleBase o1, RuleBase o2) {
-				int i1,i2;
-				if(o1 instanceof RuleIs) {
-					i1=40;
-				}else if(o1 instanceof RuleFEquals) {
-					i1=20;
-				}else if(o1 instanceof RuleExtends) {
-					i1=5;
-				}else {
-					i1=30;
-				}
-
-				if(o2 instanceof RuleIs) {
-					i2=40;
-				}else if(o2 instanceof RuleFEquals) {
-					i2=20;
-				}else if(o2 instanceof RuleExtends) {
-					i2=5;
-				}else {
-					i2=30;
-				}
-				return i1-i2;
+		rb.getSubject().getRulesSubjected().add(rb);
+		for(Object o:rb.getObjects()) {
+			if(o instanceof PGBase) {
+				((PGBase) o).getRulesObjected().add(rb);
 			}
+		}
+	}
+	public void solveAll() {
+		List<RuleBase> list=new ArrayList<RuleBase>();
+		int i;
+		for(i=0;i<100;i++) {
+			if(rules.isEmpty()) {
+				break;
+			}
+			for(RuleBase pgr:this.rules) {
+				if(pgr.isReadyToApply()) {
+					list.add(pgr);
+				}
+			}
+			rules.removeAll(list);
+			for(RuleBase pgr:list) {
+				solve(pgr);
+			}
+			list.clear();
+		}
+		if(i==100) {
+			StringBuffer err=new StringBuffer("Cannot solve all Rules! Remaining rules:\n");
+			for(RuleBase rb:rules) {
+				err.append(rb.getClass().getSimpleName()+"\n");
+			}
+			Main.logger.severe(err.toString());
 
-		};
-		this.rules.sort(c);
+		}
 	}
 
-	public void applyRules() {
-		for(RuleBase rb:this.rules) {
-			//System.out.println(rb.subjectS);
+	public void solve(RuleBase node) {
 
-			rb.apply();
+		node.applyRule();
+
+		try {
+			System.out.println("solved "+node.getSubject().toString()+" -> "
+				+node.getClass().getSimpleName()+" -> "+node.getObjects().get(0).toString());
+		}catch (Exception e){
+			System.out.println("solved "+node.getClass().getSimpleName());
 		}
+/*
+		for(RuleBase pgr:node.getSubject().getRulesObjected()) {
+			if(!pgr.isApplied()) {
+				if(pgr.isReadyToApply()) {
+					solve(pgr);
+				}
+			}
+		}*/
 	}
 }

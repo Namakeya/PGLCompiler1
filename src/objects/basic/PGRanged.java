@@ -16,7 +16,7 @@ public class PGRanged extends PGDouble{
 	public PGRanged(String name_) {
 		super(name_);
 	}
-	
+
 	public PGRanged() {
 		this("");
 	}
@@ -78,5 +78,9 @@ public class PGRanged extends PGDouble{
 		return affectFrom;
 	}
 
+	@Override
+	public String toString() {
+		return this.range.getMin()+" ~ "+this.range.getMax();
+	}
 
 }

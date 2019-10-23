@@ -1,35 +1,29 @@
 package rules;
 
 import main.Main;
-import objects.basic.PGBase;
 import objects.basic.PGObject;
 import objects.basic.PGType;
 
 public class RuleIs extends RuleBase {
 
-	public PGObject subject;
-	public PGType type;
-	public String typeS;
-
-	public RuleIs(PGObject sbj,String typeS) {
-		this.subject=sbj;
-		this.typeS=typeS;
+	public RuleIs(PGObject sbj,PGType typeS) {
+		super(sbj,typeS);
 	}
 
 	@Override
-	public PGBase apply() {
+	public void apply() {
 		//System.out.println(this.subject.getFullName());
-		this.type=PGType.getType(typeS);
-		this.subject.setType(type);
+		//PGType type=PGType.getType((String) getObjects().get(0));
+		PGType type=(PGType)getObjects().get(0);
+		((PGObject) getSubject()).setType(type);
 		//System.out.println(this.subject.getTreeString());
 		//System.out.println(this.type.getFullName());
-		Main.logger.fine("Registered "+this.subject.getFullName()+" as "+type.getSimpleName());
-		return this.subject;
+		Main.logger.fine("Registered "+getSubject().getFullName()+" as "+type.getSimpleName());
 	}
-
+/*
 	@Override
 	public boolean check() {
 		return this.subject.getType()==this.type;
 	}
-
+*/
 }

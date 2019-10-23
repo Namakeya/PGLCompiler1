@@ -9,7 +9,7 @@ import objects.basic.PGDouble;
 import objects.basic.PGRanged;
 import objects.basic.PGSymbol;
 import objects.function.PGFunction;
-
+/**unused*/
 public class DependenciesSolver {
 
 	private List<Node> nodes=new ArrayList<Node>();
@@ -35,7 +35,7 @@ public class DependenciesSolver {
 		}
 		if(pgd instanceof PGRanged) {
 			PGRanged pgr=(PGRanged) pgd;
-			
+
 			sbj.getAffectFrom().add(pgr);
 			pgr.getAffectTo().add(sbj);
 		}else if(pgd instanceof PGFunction) {
@@ -72,7 +72,7 @@ public class DependenciesSolver {
 		}
 		public PGRanged subject;
 		public PGDouble object;
-		
-		
+
+
 	}
 }

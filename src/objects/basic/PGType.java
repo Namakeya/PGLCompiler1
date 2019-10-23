@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import main.Main;
+import rules.RuleBase;
 
 public class PGType extends PGObject {
 	public static Map<String,PGType> types=new HashMap<String,PGType>();
@@ -19,9 +20,9 @@ public class PGType extends PGObject {
 		NO_TYPE=new PGType("NoType");
 		addType(NO_TYPE);
 	}
-	
+
 	private PGObject template;
-	
+
 	/**Only for making TYPE_TYPE. The paramator makes no sence.*/
 	private PGType(int a) {
 		super("TypeType",null);
@@ -30,29 +31,29 @@ public class PGType extends PGObject {
 	public PGType(String name) {
 		super(name,TYPE_TYPE);
 	}
-	
+
 	public PGType() {
 		this("");
 	}
-	
+
 	@Override
 	public void addParent(PGObject pgo) {
 		super.addParent(pgo);
 		if(pgo instanceof PGType) {
 			PGType type=(PGType)pgo;
 			PGObject temp;
-			
+
 			if(this.template==null) {
 				temp=(PGObject) type.template.clone();
-				
+
 			}else {
-				System.out.println(this.template.getFullName());
+				//System.out.println(this.template.getFullName());
 				temp=(PGObject) type.getTemplate().clone(this.template);
 			}
 			this.template=null;
 			temp.setType(this);
 			this.template=temp;
-			System.out.println(this.template.getFullName());
+			//System.out.println(this.template.getFullName());
 		}
 	}
 
@@ -78,8 +79,6 @@ public class PGType extends PGObject {
 	}
 
 
-
-
 	@Override
 	public PGBase clone() {
 		return new PGType(this.getSimpleName());
@@ -102,6 +101,29 @@ public class PGType extends PGObject {
 
 	public void setTemplate(PGObject template) {
 		this.template = template;
+	}
+
+	@Override
+	public boolean isSolved() {
+		//System.out.println("Type:"+this.getSimpleName());
+		/*
+		if(template!=null) {
+
+			for(RuleBase rb:template.getRulesSubjected()) {
+				System.out.println(rb.getClass().getSimpleName());
+			}
+		}
+		*/
+		for(RuleBase rb:getRulesSubjected()){
+			if(!rb.isApplied())return false;
+		}
+
+		if(template!=null && !template.isSolved()) {
+			//System.out.println("temp is unsolved");
+			return false;
+		}
+		//System.out.println("solved");
+		return true;
 	}
 
 }

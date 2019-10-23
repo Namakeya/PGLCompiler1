@@ -52,7 +52,8 @@ public class TextAnalyzer {
 				patt=clean(patt);
 
 				Main.ruleManager.addRules(new RuleIs(
-						(PGObject) PGBase.getOrCreateFromFullpath(patt[0],PGObject.class),patt[1]));
+						(PGObject) PGBase.getOrCreateFromFullpath(patt[0],PGObject.class),
+						PGType.getType(patt[1])));
 				continue;
 			}
 
@@ -60,7 +61,8 @@ public class TextAnalyzer {
 			if(patt.length>1) {
 				patt=clean(patt);
 
-				Main.ruleManager.addRules(new RuleExtends(PGType.getType(patt[0]),patt[1]));
+				Main.ruleManager.addRules(new RuleExtends(PGType.getType(patt[0]),
+						PGType.getType(patt[1])));
 				continue;
 			}
 

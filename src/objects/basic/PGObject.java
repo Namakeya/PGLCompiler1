@@ -9,7 +9,7 @@ public class PGObject extends PGBase{
 
 	private PGType type;
 	private Map<String,PGBase> children = new HashMap<String,PGBase>();
-	
+
 	public PGObject() {
 		this("",PGType.NO_TYPE);
 	}
@@ -46,7 +46,7 @@ public class PGObject extends PGBase{
 	/**do not change type except NO_TYPE*/
 	public void setType(PGType type) {
 		if(type.getTemplate()!=null) {
-			
+
 			type.getTemplate().clone(this);
 			//System.out.println(this.getFullName()+" type is now "+this.getTypeName());
 		}else {
@@ -116,6 +116,15 @@ public class PGObject extends PGBase{
 	@Override
 	public String getTypeName() {
 		return this.getType().getSimpleName();
+	}
+
+	@Override
+	public boolean isSolved() {
+		if(!super.isSolved())return false;
+		for(Entry<String,PGBase> e:this.children.entrySet()){
+			if(!e.getValue().isSolved())return false;
+		}
+		return true;
 	}
 
 }

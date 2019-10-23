@@ -1,8 +1,11 @@
 package objects.basic;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import main.Main;
+import rules.RuleBase;
 
 abstract public class PGBase {
 	private long serial;
@@ -10,6 +13,8 @@ abstract public class PGBase {
 
 	private PGBase parent;
 	private static Random random=new Random();
+	private List<RuleBase> rulesSubjected=new ArrayList<RuleBase>();
+	private List<RuleBase> rulesObjected=new ArrayList<RuleBase>();
 
 
 	public PGBase() {
@@ -33,9 +38,9 @@ abstract public class PGBase {
 	public String getSimpleName() {
 		return this.simpleName;
 	}
-	
+
 	public void setSimpleName(String simpleName) {
-		
+
 		if(this.parent instanceof PGObject) {
 			PGObject pgo=(PGObject)this.parent;
 			//System.out.println(pgo.getChildren().containsKey(this.simpleName));
@@ -43,7 +48,7 @@ abstract public class PGBase {
 			pgo.getChildren().put(simpleName, this);
 		}
 		this.simpleName=simpleName;
-		
+
 	}
 
 
@@ -106,12 +111,12 @@ abstract public class PGBase {
 		}
 		return pgb;
 	}
-	
+
 
 
 	public static PGBase getOrCreateFromFullpath(String path,Class<? extends PGBase> cls) {
-		
-		
+
+
 		String[] names=path.split("\\.");
 		PGObject pgb=null;
 		if(names[0].equals("root")) {
@@ -149,7 +154,7 @@ abstract public class PGBase {
 			} catch (InstantiationException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
-			
+
 			pgb.addChild(child);
 			child.setSimpleName(names[names.length-1]);
 			//System.out.println("created "+child.getFullName()+" to "+pgb.getFullName());
@@ -182,4 +187,23 @@ abstract public class PGBase {
 		return s;
 	}
 
+	public List<RuleBase> getRulesSubjected() {
+		return rulesSubjected;
+	}
+
+	public List<RuleBase> getRulesObjected() {
+		return rulesObjected;
+	}
+
+	public boolean isSolved() {
+		for(RuleBase rb:getRulesSubjected()){
+			if(!rb.isApplied())return false;
+		}
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return this.getSimpleName();
+	}
 }

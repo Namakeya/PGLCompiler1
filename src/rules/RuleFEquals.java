@@ -1,29 +1,20 @@
 package rules;
 
-import objects.basic.PGBase;
 import objects.basic.PGDouble;
 import objects.function.FunctionEquals;
 
 public class RuleFEquals extends RuleBase {
-	private FunctionEquals subject;
-	private PGDouble object;
 
 	public RuleFEquals(FunctionEquals sbj,PGDouble obj) {
-		this.subject=sbj;
-		this.object=obj;
+		super(sbj,obj);
 	}
 
 	@Override
-	public PGBase apply() {
+	public void apply() {
 
-		this.subject.setParams(new PGDouble[]{this.object});
+		((FunctionEquals)getSubject()).setParams(new PGDouble[]{(PGDouble) getObjects().get(0)});
 
-		return this.subject;
 	}
 
-	@Override
-	public boolean check() {
-		return true;
-	}
 
 }

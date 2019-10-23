@@ -5,7 +5,7 @@ import java.util.List;
 
 import main.Main;
 import objects.basic.PGRanged;
-
+/**unused*/
 public class RangeSolver {
 //Solve range to concrete value.
 private List<PGRanged> nodes=new ArrayList<PGRanged>();
@@ -36,7 +36,7 @@ private List<PGRanged> nodes=new ArrayList<PGRanged>();
 			solve(pgr);
 		}
 	}
-	
+
 	public void solve(PGRanged node) {
 		node.setValue(node.getRange().get());
 		for(PGRanged pgr:node.getAffectTo()) {

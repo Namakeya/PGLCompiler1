@@ -88,8 +88,9 @@ public class Main {
 		}
 		textAnalyzer.analyze(text.toString());
 
-		ruleManager.sortRules();
-		ruleManager.applyRules();
+		//ruleManager.sortRules();
+		//ruleManager.applyRules();
+		ruleManager.solveAll();
 		logger.info(rootObject.getTreeString());
 		dependenciesSolver.solveAll();
 		for(DependenciesSolver.Node node:dependenciesSolver.getNodes()) {
@@ -97,7 +98,7 @@ public class Main {
 		}
 		rangeSolver.solveAll();
 
-		
+
 
 		/*
 		rootObject.addChild(obj1);
