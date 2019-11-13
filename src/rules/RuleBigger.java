@@ -5,10 +5,6 @@ import objects.basic.PGRanged;
 
 public class RuleBigger extends RuleBase {
 
-	public RuleBigger(PGRanged sbj,PGDouble obj) {
-		super(sbj,obj);
-	}
-
 	@Override
 	public void apply() {
 		PGRanged subject=(PGRanged) this.getSubject();

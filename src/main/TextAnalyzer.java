@@ -18,6 +18,7 @@ import objects.function.FunctionMinus;
 import objects.function.FunctionMultiply;
 import objects.function.FunctionPlus;
 import objects.function.PGFunction;
+import rules.RuleBase;
 import rules.RuleBigger;
 import rules.RuleExtends;
 import rules.RuleFEquals;
@@ -50,19 +51,16 @@ public class TextAnalyzer {
 			String[] patt=sec.split(" is ");
 			if(patt.length>1) {
 				patt=clean(patt);
+				addRule(RuleIs.class,patt[0],PGObject.class,PGType.getType(patt[1]));
 
-				Main.ruleManager.addRules(new RuleIs(
-						(PGObject) PGBase.getOrCreateFromFullpath(patt[0],PGObject.class),
-						PGType.getType(patt[1])));
 				continue;
 			}
 
 			patt=sec.split(" extends ");
 			if(patt.length>1) {
 				patt=clean(patt);
-
-				Main.ruleManager.addRules(new RuleExtends(PGType.getType(patt[0]),
-						PGType.getType(patt[1])));
+				addRule(RuleExtends.class,new PGBase[] {PGType.getType(patt[0])},
+						new PGBase[] {PGType.getType(patt[1])});
 				continue;
 			}
 
@@ -71,43 +69,57 @@ public class TextAnalyzer {
 				patt=clean(patt);
 				if(patt[1].startsWith("\"") && patt[1].endsWith("\"")) {
 					String str=patt[1].replace("\"", "");
-					Main.ruleManager.addRules(new RuleSEquals
-							((PGString) PGBase.getOrCreateFromFullpath(patt[0],PGString.class),str));
+					addRule(RuleSEquals.class,patt[0],PGString.class,str);
+
 				}else {
-					Main.ruleManager.addRules(new RuleFEquals
-							((FunctionEquals)PGBase.getOrCreateFromFullpath(patt[0],FunctionEquals.class)
-									,this.interpretFormula(patt[1])));
+					addRule(RuleFEquals.class,patt[0],FunctionEquals.class,this.interpretFormula(patt[1]));
+
 				}
 				continue;
 			}
 			patt=sec.split(">");
 			if(patt.length>1) {
 				patt=clean(patt);
-
-				Main.ruleManager.addRules(new RuleBigger((PGRanged) PGBase.getOrCreateFromFullpath
-						(patt[0],PGRanged.class),this.interpretFormula(patt[1])));
-
+				addRule(RuleBigger.class,patt[0],PGRanged.class,this.interpretFormula(patt[1]));
 				continue;
 			}
 			patt=sec.split("<");
 			if(patt.length==2) {
 				patt=clean(patt);
-				Main.ruleManager.addRules(new RuleSmaller((PGRanged) PGBase.getOrCreateFromFullpath
-						(patt[0],PGRanged.class),this.interpretFormula(patt[1])));
-
+				addRule(RuleSmaller.class,patt[0],PGRanged.class,this.interpretFormula(patt[1]));
 				continue;
 			}else if(patt.length==3) {
 				patt=clean(patt);
+				addRule(RuleBigger.class,patt[1],PGRanged.class,this.interpretFormula(patt[0]));
+				addRule(RuleSmaller.class,patt[1],PGRanged.class,this.interpretFormula(patt[2]));
 
-				Main.ruleManager.addRules(new RuleBigger((PGRanged) PGBase.getOrCreateFromFullpath
-						(patt[1],PGRanged.class),this.interpretFormula(patt[0])));
-
-				Main.ruleManager.addRules(new RuleSmaller((PGRanged) PGBase.getOrCreateFromFullpath
-						(patt[1],PGRanged.class),this.interpretFormula(patt[2])));
 				continue;
 			}
 		}
 		logger.fine("end analyzing text");
+	}
+
+	public void addRule(Class<? extends RuleBase> rulec,String subject,Class<? extends PGBase> subclass,Object object) {
+		addRule(rulec,subject,subclass,new Object[] {object});
+	}
+
+
+	public void addRule(Class<? extends RuleBase> rulec,String subject,Class<? extends PGBase> subclass,Object[] objects) {
+		addRule(rulec,PGBase.getOrCreateFromFullpath(subject,subclass),objects);
+	}
+
+	public void addRule(Class<? extends RuleBase> rulec,PGBase[] subjects,Object[] objects) {
+		for(PGBase subject:subjects) {
+			RuleBase rule = null;
+			try {
+				rule = rulec.newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+			rule.setSubject(subject);
+			rule.setObjects(objects);
+			Main.ruleManager.addRules(rule);
+		}
 	}
 
 	public String clean(String text) {

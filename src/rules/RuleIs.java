@@ -6,9 +6,6 @@ import objects.basic.PGType;
 
 public class RuleIs extends RuleBase {
 
-	public RuleIs(PGObject sbj,PGType typeS) {
-		super(sbj,typeS);
-	}
 
 	@Override
 	public void apply() {

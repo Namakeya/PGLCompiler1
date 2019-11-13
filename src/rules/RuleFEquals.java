@@ -5,10 +5,6 @@ import objects.function.FunctionEquals;
 
 public class RuleFEquals extends RuleBase {
 
-	public RuleFEquals(FunctionEquals sbj,PGDouble obj) {
-		super(sbj,obj);
-	}
-
 	@Override
 	public void apply() {
 

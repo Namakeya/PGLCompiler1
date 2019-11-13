@@ -114,7 +114,7 @@ abstract public class PGBase {
 
 
 
-	public static PGBase getOrCreateFromFullpath(String path,Class<? extends PGBase> cls) {
+	public static PGBase[] getOrCreateFromFullpath(String path,Class<? extends PGBase> cls) {
 
 
 		String[] names=path.split("\\.");
@@ -158,10 +158,10 @@ abstract public class PGBase {
 			pgb.addChild(child);
 			child.setSimpleName(names[names.length-1]);
 			//System.out.println("created "+child.getFullName()+" to "+pgb.getFullName());
-			return child;
+			return new PGBase[]{child};
 		}else if(cls.isInstance(child)) {
 			//System.out.println(child.getFullName()+" exists");
-			return child;
+			return new PGBase[]{child};
 		}else {
 			Main.logger.severe(child.getFullName()+" is not "+cls.getSimpleName()+". This is "
 					+child.getClass().getSimpleName()+" instead.");

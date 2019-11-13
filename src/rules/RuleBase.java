@@ -10,25 +10,8 @@ public abstract class RuleBase {
 	private List<Object> objects;
 	private boolean isApplied;
 
-	public RuleBase(PGBase subjects , List<Object> objects) {
-		this.subject=subjects;
-		this.objects=objects;
+	public RuleBase() {
 		this.setApplied(false);
-	}
-
-	public RuleBase(PGBase subject,Object[] objects) {
-
-		List<Object> oblist=new ArrayList<Object>();
-		for(Object ob:objects) {
-			oblist.add(ob);
-		}
-		this.subject=subject;
-		this.objects=oblist;
-		this.setApplied(false);
-	}
-
-	public RuleBase(PGBase subject,Object object) {
-		this(subject,new Object[] {object});
 	}
 
 	public void applyRule() {
@@ -42,8 +25,30 @@ public abstract class RuleBase {
 		return subject;
 	}
 
+	public void setSubject(PGBase subject) {
+		this.subject=subject;
+	}
+
 	public List<Object> getObjects() {
 		return objects;
+	}
+
+	public void setObjects(List<Object> objects) {
+		this.objects=objects;
+	}
+
+	public void setObjects(Object[] objects) {
+		List<Object> oblist=new ArrayList<Object>();
+		for(Object ob:objects) {
+			oblist.add(ob);
+		}
+		this.objects=oblist;
+	}
+
+	public void setObject(Object object) {
+		List<Object> oblist=new ArrayList<Object>();
+		oblist.add(object);
+		setObjects(oblist);
 	}
 
 	public boolean isReadyToApply() {
