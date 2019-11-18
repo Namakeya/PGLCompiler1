@@ -117,18 +117,39 @@ abstract public class PGBase {
 	public static PGBase[] getOrCreateFromFullpath(String path,Class<? extends PGBase> cls) {
 
 
-		String[] names=path.split("\\.");
+		String[] tx=path.split("\\$");
+		String[] names=null;
 		PGObject pgb=null;
-		if(names[0].equals("root")) {
-			pgb=Main.rootObject;
-		}else if(PGType.getType(names[0])!=null){
-			pgb=PGType.getType(names[0]).getTemplate();
-			//System.out.println("adding "+path+" to "+pgb.getTypeName());
+		PGBase child=null;
+		if(tx.length==1) {
+			names=tx[0].split("\\.");
+
+		}else if(tx.length==2) {
+			if(PGType.getType(tx[0])!=null) {
+				pgb=PGType.getType(tx[0]).getTemplate();
+			}else {
+				Main.logger.severe("Cannot find Type "+tx[0]);
+			}
+			names=tx[1].split("\\.");
+			child=pgb.getChild(names[0]);
 		}else {
-			Main.logger.severe("Unknown root object "+names[0]);
+			Main.logger.severe("Inner class is not suppouted : "+path);
 		}
-		PGBase child=pgb.getChild(names[1]);
-		for(int i=1;i<names.length-1;i++) {
+
+		for(int i=0;i<names.length-1;i++) {
+			if(i==0 && pgb==null) {
+
+				if(names[0].equals("root")) {
+					pgb=Main.rootObject;
+				}else if(PGType.getType(names[0])!=null){
+					pgb=PGType.getType(names[0]);
+					//System.out.println("adding "+path+" to "+pgb.getTypeName());
+				}else {
+					Main.logger.severe("Unknown root object "+names[0]);
+				}
+				child=pgb.getChild(names[1]);
+				continue;
+			}
 			String s=names[i];
 			if(pgb==null) {
 				Main.logger.severe("Object "+s+" does not exist.");

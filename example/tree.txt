@@ -1,10 +1,10 @@
 Tree extends Object
-&Tree.stem is Rect
-&100<Tree.stem.height<500
-&10<Tree.stem.width<50
-&0<Tree.stem.x<1024
-&0<Tree.stem.y<512
-&-1024<Tree.stem.z<1024
-&Tree.stem.texture="resource/wood.jpg"
+&Tree$stem is Rect
+&100<Tree$stem.height<500
+&10<Tree$stem.width<50
+&0<Tree$stem.x<1024
+&0<Tree$stem.y<512
+&-1024<Tree$stem.z<1024
+&Tree$stem.texture="resource/wood.jpg"
 &root.tree1 is Tree
 &root.tree2 is Tree
