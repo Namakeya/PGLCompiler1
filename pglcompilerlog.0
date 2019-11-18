@@ -132,3 +132,9 @@ RuleIs
 ---z(PGRanged)
 ---height(PGRanged)
 
+11 18, 2019 5:52:15 午後 objects.basic.PGType getType
+情報: type Root does not exist. The type was created as a child of Object.
+11 18, 2019 5:52:15 午後 objects.basic.PGType getType
+情報: type Tree does not exist. The type was created as a child of Object.
+11 18, 2019 5:52:15 午後 objects.basic.PGType getType
+情報: type Rect does not exist. The type was created as a child of Object.
